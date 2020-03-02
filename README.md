@@ -62,3 +62,4 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - [dojo-mastering-live-build/](https://www.kali.org/docs/development/dojo-mastering-live-build/)
 - [kali-metapackages](https://tools.kali.org/kali-metapackages)
 - [creating-an-Ubuntu-VM-with-packer](https://kappataumu.com/articles/creating-an-Ubuntu-VM-with-packer.html)
+- [how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes](https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes/)
