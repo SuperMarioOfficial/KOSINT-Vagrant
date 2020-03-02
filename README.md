@@ -61,3 +61,4 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - [live-build-config-examples](https://gitlab.com/kalilinux/recipes/live-build-config-examples/-/blob/master/kali-linux-mate-top10-nonroot.sh)
 - [dojo-mastering-live-build/](https://www.kali.org/docs/development/dojo-mastering-live-build/)
 - [kali-metapackages](https://tools.kali.org/kali-metapackages)
+- [creating-an-Ubuntu-VM-with-packer](https://kappataumu.com/articles/creating-an-Ubuntu-VM-with-packer.html)
