@@ -1,0 +1,3 @@
+- https://www.perkin.org.uk/posts/create-virtualbox-vm-from-the-command-line.html
+- https://www.andreafortuna.org/2019/10/24/how-to-create-a-virtualbox-vm-from-command-line/
+- https://networking.ringofsaturn.com/Unix/Create_Virtual_Machine_VBoxManage.php
