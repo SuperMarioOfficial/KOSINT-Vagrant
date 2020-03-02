@@ -3,8 +3,12 @@
 ## The plan:
 - build the iso
 - configure virtualbox with packer
-- provisioning with ansible paybook
-- create a vagrant box and push it on the vagrant cloud
+- provisioning with ansible playbook
+### maybe ... 
+- build the iso
+- create a vagrant box
+- provisioning with ansible playbook
+
 
 ## Build the ISO
 ### steps:
