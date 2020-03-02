@@ -2,11 +2,16 @@
 
 ## The plan 
 - build the iso
+    - kali-tools-information-gathering
+    - kali-tools-reporting
+    - kali-tools-social-engineering
 - configure virtualbox with packer
 - provisioning with ansible playbook
+    - Install docker
+    - pull docker images
 - create a vagrant box
-
 ------
+
 
 # Build the ISO
 ## steps:
@@ -149,6 +154,29 @@ Preseeding provides a way to set answers to questions asked during the installat
 ### How to create a playbook
 # Create Vagrant box
 ### How to create a box
+
+
+# Docker
+```
+FROM Xubuntu 18.04.4 LTS
+RUN apt-get update && \
+    apt-get -y dist-upgrade
+RUN sudo add-apt-repository universe && sudo apt update
+RUN sudo apt install torbrowser-launcher
+
+RUN useradd -m -d /home/anon anon
+
+WORKDIR /home/anon
+
+
+RUN mkdir /home/anon/Downloads && \
+    chown -R anon:anon /home/anon && \
+    apt-get autoremove
+
+USER anon
+
+CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
+```
 
 # Other
 ### XFCE GUI
