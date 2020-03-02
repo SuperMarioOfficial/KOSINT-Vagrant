@@ -1,14 +1,14 @@
 # K-OSINT.iso
 
-### Light waight GUI
-![](https://i.ytimg.com/vi/Twcm18oFmqs/maxresdefault.jpg)
-After a research done, I came to the conclusion that xfce is probably the lightest and fasted gui. 
-- [linux_distros/GUI_ram_consumption_comparison_updated](https://www.reddit.com/r/linux/comments/5l39tz/linux_distros_ram_consumption_comparison_updated/)
-- [Power Use, RAM + Boot Times With Unity, Xfce, GNOME, LXDE, Budgie & KDE Plasma](https://www.phoronix.com/scan.php?page=article&item=ubu-1704-desktops&num=2)
-- [Kali xfce](https://www.youtube.com/watch?v=Twcm18oFmqs)
-- [Change from Gnome to xfce](https://www.youtube.com/watch?v=uIbG3SI5hd8)
-
-### Packages
+### steps:
+#### 1
+``` bash
+sudo apt update
+sudo apt install git live-build cdebootstrap devscripts -y
+git clone git://gitlab.com/kalilinux/build-scripts/live-build-config.git
+cd live-build-config
+```
+#### 2 (check below) https://tools.kali.org/kali-metapackages
 ***$vi*** ``` kali-config/variant-default/package-lists/kali.list.chroot```
 ```
 # You always want those
@@ -16,101 +16,38 @@ kali-linux-core
 
 # Kali applications
 #<package>
+kali-tools-information-gathering
 
 # Graphical desktop
 kali-desktop-xfce
 ```
-#### kali-linux-core: Base Kali Linux System – core items that are always included
-```
-    cifs-utils
-    ftp
-    gdisk
-    iw
-    lvm2
-    mlocate
-    netcat-traditional
-    nfs-common
+#### 3 
 
-    openssh-server
-    openvpn
-    p7zip-full
-    parted
-    rfkill
-    samba
-    snmp
 
-    sudo
-    tcpdump
-    testdisk
-    tftp
-    tightvncserver
-    tmux
-    unrar
-    vim
-    whois
-```
-#### kali-tools-information-gathering: Used for Open Source Intelligence (OSINT) & information gathering
-```
-    0trace
-    arping
-    automater
-    braa
-    cdpsnarf
-    dmitry
-    dnmap
-    dnsenum
-    dnsmap
-    dnsrecon
-    dnstracer
-    dnswalk
-    enum4linux
-    fierce
-    firewalk
-    fping
-    fragroute
-    fragrouter
-    ftester
+## Preceed
+- https://www.kali.org/dojo/preseed.cfg
+- https://kali.training/topic/unattended-installations/
+- https://www.debian.org/releases/stable/amd64/apb.en.html
+- [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
+## Packer
+- [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
 
-    hping3
-    ike-scan
-    intrace
-    irpas
-    lbd
-    maltego
-    masscan
-    metagoofil
-    miranda
-    nbtscan
-    ncat
-    netdiscover
-    netmask
-    nmap
-    onesixtyone
-    p0f
-    recon-ng
-    smbmap
-    smtp-user-enum
 
-    snmpcheck
-    sparta
-    sslcaudit
-    ssldump
-    sslh
-    sslscan
-    sslyze
-    swaks
-    thc-ipv6
-    theharvester
-    tlssled
-    twofi
-    unicornscan
-    urlcrazy
-    wafw00f
-    wol-e
-    xprobe
-    zenmap
-```
-#### kali-tools-reporting: Reporting tools
-```
-maltego
-```
+## Vagrant
+
+
+
+### XFCE GUI
+![](https://i.ytimg.com/vi/Twcm18oFmqs/maxresdefault.jpg)
+After a research done, I came to the conclusion that xfce is probably the lightest and fasted gui. 
+- [linux_distros/GUI_ram_consumption_comparison_updated](https://www.reddit.com/r/linux/comments/5l39tz/linux_distros_ram_consumption_comparison_updated/)
+- [Power Use, RAM + Boot Times With Unity, Xfce, GNOME, LXDE, Budgie & KDE Plasma](https://www.phoronix.com/scan.php?page=article&item=ubu-1704-desktops&num=2)
+- [Kali xfce](https://www.youtube.com/watch?v=Twcm18oFmqs)
+- [Change from Gnome to xfce](https://www.youtube.com/watch?v=uIbG3SI5hd8)
+- [How To Install Xfce4 & MATE Desktop Environments On Kali Linux](https://www.youtube.com/watch?v=hy9F87basCI)
+
+## Links
+- [create-kali-linux-iso](https://www.cybrary.it/blog/0p3n/create-kali-linux-iso/)
+- [live-build-config-examples](https://gitlab.com/kalilinux/recipes/live-build-config-examples/-/blob/master/kali-linux-mate-top10-nonroot.sh)
+- [dojo-mastering-live-build/](https://www.kali.org/docs/development/dojo-mastering-live-build/)
+- [kali-metapackages](https://tools.kali.org/kali-metapackages)
