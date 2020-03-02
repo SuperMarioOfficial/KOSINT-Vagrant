@@ -22,7 +22,14 @@ kali-tools-reporting
 kali-desktop-xfce
 ```
 #### 3 
-
+***$vi*** ```kali-config/common/includes.binary/isolinux/install.cfg```
+```
+label install
+    menu label ^Install Automated
+    linux /install/vmlinuz
+    initrd /install/initrd.gz
+    append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
+```
 
 ## Preceed
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. 
