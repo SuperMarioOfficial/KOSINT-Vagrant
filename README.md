@@ -8,8 +8,8 @@
 
 ------
 
-## Build the ISO
-### steps:
+# Build the ISO
+## steps:
 #### 1
 ``` bash
 sudo apt update
@@ -40,7 +40,7 @@ label install
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
 
-## Automatic installation process
+# configure virtualbox with packer
 ### Packer
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
 - [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
@@ -145,9 +145,9 @@ Preseeding provides a way to set answers to questions asked during the installat
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
 
 
-## provisioning
+# provisioning
 ### Ansible
-### Vagrant
+# Create Vagrant box
 
 ### XFCE GUI
 ![](https://i.ytimg.com/vi/Twcm18oFmqs/maxresdefault.jpg)
