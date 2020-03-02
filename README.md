@@ -1,5 +1,11 @@
 # K-OSINT.iso
 
+## The plan:
+- build the iso
+- configure virtualbox with packer
+- provisioning with ansible paybook
+- create a vagrant box and push it on the vagrant cloud
+
 ## Build the ISO
 ### steps:
 #### 1
