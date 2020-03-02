@@ -54,7 +54,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 
 ```
 Packer/
-      |---ubuntu1804.json
+      |---<distribution>.json
       |---http/
       |       |--- preseed.cfg
       |---scripts/
@@ -64,82 +64,118 @@ Packer/
 
 ```
 {
-    "builders": [
-        {
-            "type": "virtualbox-iso",
-            "boot_command": [
-            "",
-            "",
-            "",
-            "/install/vmlinuz",
-            " auto",
-            " console-setup/ask_detect=false",
-            " console-setup/layoutcode=us",
-            " console-setup/modelcode=pc105",
-            " debconf/frontend=noninteractive",
-            " debian-installer=en_US",
-            " fb=false",
-            " initrd=/install/initrd.gz",
-            " kbd-chooser/method=us",
-            " keyboard-configuration/layout=USA",
-            " keyboard-configuration/variant=USA",
-            " locale=en_US",
-            " netcfg/get_domain=vm",
-            " netcfg/get_hostname=vagrant",
-            " grub-installer/bootdev=/dev/sda",
-            " noapic",
-            " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
-            " -- ",
-            ""
-            ],
-            "boot_wait": "10s",
-            "disk_size": 81920,
-            "guest_os_type": "Ubuntu_64",
-            "headless": false,
-            "http_directory": "http",
-            "iso_urls": [
-            "iso/ubuntu-18.04-server-amd64.iso",
-            "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04-server-amd64.iso"
-            ],
-            "iso_checksum_type": "sha256",
-            "iso_checksum": "a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc",
-            "ssh_username": "vagrant",
-            "ssh_password": "vagrant",
-            "ssh_port": 22,
-            "ssh_wait_timeout": "10000s",
-            "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
-            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-            "virtualbox_version_file": ".vbox_version",
-            "vm_name": "packer-ubuntu-18.04-amd64",
-            "vboxmanage": [
-            [
-                "modifyvm",
-                "{{.Name}}",
-                "--memory",
-                "1024"
-            ],
-            [
-                "modifyvm",
-                "{{.Name}}",
-                "--cpus",
-                "1"
-            ]
-            ]
-        }
-    ],
-    "provisioners": [{
+  "variables": {
+    "vm_name": "k-osint",
+    "disk_size": 20480,
+    "iso_checksum": "fe0fab66c49325c295a116cefd00ca94993efee0",
+    "iso_checksum_type": "sha1",
+    "iso_url": "k-osint.iso",
+    "box_name" : "k-osint", 
+    "box_desc" : "Official Kali Linux OS distro of Tracelab"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": false,
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "Debian_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        ["modifyvm","{{.Name}}","--memory","8000"],
+        ["modifyvm","{{.Name}}","--cpus","3"], 
+
+      ],
+      "boot_command": [
+        "<esc><wait>",
+        "install preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg debian-installer=en_US auto locale=en_US kbd-chooser/method=us <wait>",
+        "netcfg/get_hostname={{ .Name }} netcfg/get_domain=vagrantup.com fb=false debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+	"console-keymaps-at/keymap=us keyboard-configuration/xkb-keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -h 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s"
+    }, 
+    {
+      "type": "qemu",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "ssh_wait_timeout": "30s",
+      "shutdown_command": "shutdown -P now",
+      "disk_size": "{{user `disk_size`}}",
+      "format": "qcow2",
+      "headless": false,
+      "accelerator": "kvm",
+      "http_directory": "http",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "locale=en_US <wait>",
+        "kbd-chooser/method=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "<enter><wait>"
+      ], "qemuargs": [ 
+           [ "-m", "512m" ],
+           [ "--no-acpi", "" ]
+      ]
+    } 
+  ],
+  "provisioners": [
+    {
       "type": "shell",
       "scripts": [
-        "scripts/init.sh",
-        "scripts/cleanup.sh"
-      ]
-    }],
-    "post-processors": [{
-      "type": "vagrant",
-      "compression_level": "8",
-      "output": "ubuntu-18.04-{{.Provider}}.box"
-    }]
+        "scripts/base.sh",
+        "scripts/virtualbox.sh",
+        "scripts/vagrant.sh",
+        "scripts/ruby.sh",
+        "scripts/puppet.sh",
+        "scripts/chef.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "pause_before": "10s",
+      "override": {
+        "virtualbox-iso": {
+          "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "output" : "{{user `box_name`}}",
+    "only": ["virtualbox-iso"]
+
   }
+  ]
+}
 ```
 
 ### Preceed
