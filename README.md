@@ -15,8 +15,8 @@ cd live-build-config
 kali-linux-core
 
 # Kali applications
-#<package>
 kali-tools-information-gathering
+kali-tools-reporting
 
 # Graphical desktop
 kali-desktop-xfce
