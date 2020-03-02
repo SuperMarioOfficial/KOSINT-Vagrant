@@ -25,6 +25,7 @@ kali-desktop-xfce
 
 
 ## Preceed
+Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. 
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
 - https://www.debian.org/releases/stable/amd64/apb.en.html
