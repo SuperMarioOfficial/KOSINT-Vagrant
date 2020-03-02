@@ -1,13 +1,10 @@
 # K-OSINT.iso
 
-## The plan 1
+## The plan 
 - build the iso
 - configure virtualbox with packer
 - provisioning with ansible playbook
-## The plan 2 
-- build the iso
 - create a vagrant box
-- provisioning with ansible playbook
 
 ------
 
