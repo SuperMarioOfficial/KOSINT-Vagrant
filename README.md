@@ -9,7 +9,7 @@ sudo apt install git live-build cdebootstrap devscripts -y
 git clone git://gitlab.com/kalilinux/build-scripts/live-build-config.git
 cd live-build-config
 ```
-#### 2 (check below) https://tools.kali.org/kali-metapackages
+#### 2 https://tools.kali.org/kali-metapackages
 ***$vi*** ``` kali-config/variant-default/package-lists/kali.list.chroot```
 ```
 # You always want those
@@ -22,7 +22,7 @@ kali-tools-reporting
 # Graphical desktop
 kali-desktop-xfce
 ```
-#### 3 
+#### 3 preseed.cfg [1](https://www.kali.org/dojo/preseed.cfg)
 ***$vi*** ```kali-config/common/includes.binary/isolinux/install.cfg```
 ```
 label install
@@ -37,6 +37,96 @@ label install
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
 - [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
 - [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
+
+```
+Packer/
+      |---ubuntu1804.json
+      |---http/
+      |       |--- preseed.cfg
+      |---scripts/
+              |--- init.sh
+              |--- cleanup.sh
+```
+
+```
+{
+    "builders": [
+        {
+            "type": "virtualbox-iso",
+            "boot_command": [
+            "",
+            "",
+            "",
+            "/install/vmlinuz",
+            " auto",
+            " console-setup/ask_detect=false",
+            " console-setup/layoutcode=us",
+            " console-setup/modelcode=pc105",
+            " debconf/frontend=noninteractive",
+            " debian-installer=en_US",
+            " fb=false",
+            " initrd=/install/initrd.gz",
+            " kbd-chooser/method=us",
+            " keyboard-configuration/layout=USA",
+            " keyboard-configuration/variant=USA",
+            " locale=en_US",
+            " netcfg/get_domain=vm",
+            " netcfg/get_hostname=vagrant",
+            " grub-installer/bootdev=/dev/sda",
+            " noapic",
+            " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+            " -- ",
+            ""
+            ],
+            "boot_wait": "10s",
+            "disk_size": 81920,
+            "guest_os_type": "Ubuntu_64",
+            "headless": false,
+            "http_directory": "http",
+            "iso_urls": [
+            "iso/ubuntu-18.04-server-amd64.iso",
+            "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04-server-amd64.iso"
+            ],
+            "iso_checksum_type": "sha256",
+            "iso_checksum": "a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+            "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+            "virtualbox_version_file": ".vbox_version",
+            "vm_name": "packer-ubuntu-18.04-amd64",
+            "vboxmanage": [
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--memory",
+                "1024"
+            ],
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--cpus",
+                "1"
+            ]
+            ]
+        }
+    ],
+    "provisioners": [{
+      "type": "shell",
+      "scripts": [
+        "scripts/init.sh",
+        "scripts/cleanup.sh"
+      ]
+    }],
+    "post-processors": [{
+      "type": "vagrant",
+      "compression_level": "8",
+      "output": "ubuntu-18.04-{{.Provider}}.box"
+    }]
+  }
+```
 
 ### Preceed
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
