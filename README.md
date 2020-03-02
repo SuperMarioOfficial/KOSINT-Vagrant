@@ -145,10 +145,12 @@ Preseeding provides a way to set answers to questions asked during the installat
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
 
 
-# provisioning
-### Ansible
+# Provisioning with ansible playbook
+### How to create a playbook
 # Create Vagrant box
+### How to create a box
 
+# Other
 ### XFCE GUI
 ![](https://i.ytimg.com/vi/Twcm18oFmqs/maxresdefault.jpg)
 After a research done, I came to the conclusion that xfce is probably the lightest and fasted gui. 
@@ -157,8 +159,7 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - [Kali xfce](https://www.youtube.com/watch?v=Twcm18oFmqs)
 - [Change from Gnome to xfce](https://www.youtube.com/watch?v=uIbG3SI5hd8)
 - [How To Install Xfce4 & MATE Desktop Environments On Kali Linux](https://www.youtube.com/watch?v=hy9F87basCI)
-
-## Links
+### Links
 - [create-kali-linux-iso](https://www.cybrary.it/blog/0p3n/create-kali-linux-iso/)
 - [live-build-config-examples](https://gitlab.com/kalilinux/recipes/live-build-config-examples/-/blob/master/kali-linux-mate-top10-nonroot.sh)
 - [dojo-mastering-live-build/](https://www.kali.org/docs/development/dojo-mastering-live-build/)
