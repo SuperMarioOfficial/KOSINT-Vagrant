@@ -1,5 +1,6 @@
 # K-OSINT.iso
 
+## Build the ISO
 ### steps:
 #### 1
 ``` bash
@@ -31,17 +32,18 @@ label install
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
 
-## Preceed
+## Automatic installation process
+### Packer
+The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
+- [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
+
+### Preceed
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
 - [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
 - [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
-
-## Packer
-- [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
-
 
 ## Vagrant
 
@@ -63,3 +65,4 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - [kali-metapackages](https://tools.kali.org/kali-metapackages)
 - [creating-an-Ubuntu-VM-with-packer](https://kappataumu.com/articles/creating-an-Ubuntu-VM-with-packer.html)
 - [how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes](https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes/)
+- [whonix-kali](https://github.com/j7k6/vagrant-whonix-kali)
