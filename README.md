@@ -32,11 +32,13 @@ label install
 ```
 
 ## Preceed
-Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. 
+Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
-- https://www.debian.org/releases/stable/amd64/apb.en.html
+- [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
 - [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
+- [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
+
 ## Packer
 - [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
 
