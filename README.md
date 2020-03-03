@@ -1,6 +1,7 @@
 # K-OSINT.iso
 
 ## The plan 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/idea.PNG)
 - build the iso
     - kali-tools-information-gathering
     - kali-tools-reporting
