@@ -51,7 +51,12 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
 - [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
 - [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
-
+- [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
+- [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
+- [network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
+```
+--nic<1-N> none|null|nat|natnetwork|bridged|intnet|hostonly|generic: Configures the type of networking for each of the VM's virtual network cards. Options are: not present (none), not connected to the host (null), use network address translation (nat), use the new network address translation engine (natnetwork), bridged networking (bridged), or use internal networking (intnet), host-only networking (hostonly), or access rarely used sub-modes (generic). These options correspond to the modes described in Section 6.2, “Introduction to Networking Modes”. 
+```
 ```
 Packer/
       |---<distribution>.json
@@ -88,6 +93,10 @@ Packer/
       "vboxmanage": [
         ["modifyvm","{{.Name}}","--memory","8000"],
         ["modifyvm","{{.Name}}","--cpus","3"], 
+	["modifyvm","{{.Name}}","--audio","none"], 
+	["modifyvm","{{.Name}}", "--nic1", "nat"]
+	["modifyvm","{{.Name}}", "--nic2", "intnet"]
+	["modifyvm","{{.Name}}", "--intnet2", "whonix"]
 
       ],
       "boot_command": [
@@ -190,6 +199,7 @@ Preseeding provides a way to set answers to questions asked during the installat
 # Provisioning with ansible playbook
 ### How to create a playbook
 # Create Vagrant box
+- [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 ### How to create a box
 
 
