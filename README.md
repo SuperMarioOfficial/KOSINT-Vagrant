@@ -133,10 +133,80 @@ Packer/
 }
 ```
 
-
-
 # Provisioning with ansible playbook
 ### How to create a playbook
+- [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
+- [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
+```
+"provisioners": [
+{
+"type": "shell",
+"script": "provision.sh"
+}
+]
+```
+```
+#!/bin/bash
+set -e
+#provision.sh sudo apt-get update
+ echo "apt-get update done."
+ sudo apt-get -y upgrade
+ sudo apt-get install -y python-dev python-pip
+ sudo pip install ansible
+ sudo timedatectl set-timezone Europe/Istanbul
+ sudo localectl set-locale LANG=en_US.utf8
+ sudo wget ‘https://s3.amazonaws.com/packeramidemo/i_playbook.yml'
+ echo "Running build."
+ sudo ansible-playbook i_playbook.yml
+```
+
+```
+hosts: localhost
+ connection: local
+ sudo: yes
+ tasks:
+  — name: Install list of packages
+  apt: name={{item}} state=installed
+ with_items:
+ — htop
+ — ctop
+ — screen
+ — unzip
+ — curl
+ — sudo
+ — mtr
+ — bash-completion
+ — tree
+ — colordiff
+ — ntp
+ — bwm-ng
+ — docker-compose
+ — apt-transport-https- name: install docker
+ 
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    update_cache: yes
+    upgrade: yes
+    cache_valid_time: 86400 #One day
+ 
+# do the actual apt-get dist-upgrade
+ - name: apt-get dist-upgrade
+   apt:
+     upgrade: dist # upgrade all packages to latest version
+    
+ - name: apt-get autoremove
+      command: apt-get -y autoremove
+      args:
+        warn: false
+
+# check if we need a reboot
+ - name: check if reboot needed
+    stat: path=/var/run/reboot-required
+    register: file_reboot_required
+```
+
+
 # Create Vagrant box
 - [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 ### How to create a box
