@@ -305,3 +305,8 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - [whonix-kali](https://github.com/j7k6/vagrant-whonix-kali)
 - [Wchecksum](https://answers.microsoft.com/en-us/insider/forum/insider_wintp-insider_update/is-there-built-in-checksum-for-win-10/8dba82be-f036-4460-b427-954e057b678a)
 - [creating-an-Ubuntu-VM-with-packer](https://kappataumu.com/articles/creating-an-Ubuntu-VM-with-packer.html)
+- https://www.perkin.org.uk/posts/create-virtualbox-vm-from-the-command-line.html
+- https://www.andreafortuna.org/2019/10/24/how-to-create-a-virtualbox-vm-from-command-line/
+- https://networking.ringofsaturn.com/Unix/Create_Virtual_Machine_VBoxManage.php
+- [Chapter 6. Virtual Networking](https://www.virtualbox.org/manual/ch06.html)
+
