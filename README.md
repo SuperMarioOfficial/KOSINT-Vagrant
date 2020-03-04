@@ -46,6 +46,20 @@ label install
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
 
+### Tree structure project
+```
+Packer/
+      |---k-osint.json
+      |---k-osint.iso
+      |---http/
+      |       |--- preseed.cfg
+      |---scripts/
+              |--- init.sh
+              |--- cleanup.sh
+	      |--- ansible.sh
+```
+
+
 # configure virtualbox with packer
 ### Packer Intro
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
@@ -64,18 +78,90 @@ Preseeding provides a way to set answers to questions asked during the installat
 - [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
 
-### Tree structure project
+#### preseed.cfg
 ```
-Packer/
-      |---k-osint.json
-      |---k-osint.iso
-      |---http/
-      |       |--- preseed.cfg
-      |---scripts/
-              |--- init.sh
-              |--- cleanup.sh
-	      |--- ansible.sh
+d-i debian-installer/locale string en_US.UTF-8
+d-i console-keymaps-at/keymap select us
+d-i mirror/country string enter information manually
+d-i mirror/http/hostname string http.kali.org
+d-i mirror/http/directory string /kali
+d-i keyboard-configuration/xkb-keymap select us
+d-i mirror/http/proxy string
+d-i mirror/suite string kali-rolling
+d-i mirror/codename string kali-rolling
+
+d-i clock-setup/utc boolean true
+d-i time/zone string US/Eastern
+
+# Disable security, volatile and backports
+d-i apt-setup/services-select multiselect 
+
+# Enable contrib and non-free
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+
+# Disable source repositories too
+d-i apt-setup/enable-source-repositories boolean false
+
+# Partitioning
+d-i partman-auto/method string regular
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-auto/choose_recipe select atomic
+d-i partman-auto/disk string /dev/sda
+d-i partman/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+
+# Disable CDROM entries after install
+d-i apt-setup/disable-cdrom-entries boolean true
+
+# Upgrade installed packages
+d-i pkgsel/upgrade select full-upgrade
+
+# Change default hostname
+d-i netcfg/get_hostname string kali
+d-i netcfg/get_domain string unassigned-domain
+#d-i netcfg/choose_interface select auto
+d-i netcfg/choose_interface select eth0
+d-i netcfg/dhcp_timeout string 60
+
+d-i hw-detect/load_firmware boolean false
+
+# Do not create a normal user account
+d-i passwd/make-user boolean false
+d-i passwd/root-password password toor
+d-i passwd/root-password-again password toor
+
+d-i apt-setup/use_mirror boolean true
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean false
+d-i grub-installer/bootdev string /dev/sda
+d-i finish-install/reboot_in_progress note
+
+# Disable popularity-contest
+popularity-contest popularity-contest/participate boolean false
+
+kismet kismet/install-setuid boolean false
+kismet kismet/install-users string
+
+sslh sslh/inetd_or_standalone select standalone
+
+mysql-server-5.5 mysql-server/root_password_again password
+mysql-server-5.5 mysql-server/root_password password
+mysql-server-5.5 mysql-server/error_setting_password error
+mysql-server-5.5 mysql-server-5.5/postrm_remove_databases boolean false
+mysql-server-5.5 mysql-server-5.5/start_on_boot boolean true
+mysql-server-5.5 mysql-server-5.5/nis_warning note
+mysql-server-5.5 mysql-server-5.5/really_downgrade boolean false
+mysql-server-5.5 mysql-server/password_mismatch error
+mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
+
 ```
+
 ### Packer configuration
 ```
 {
