@@ -191,7 +191,7 @@ mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
-      "guest_additions_interface": "iso_interface",
+      "guest_additions_interface": "sata",
       "guest_additions_mode": "attach",
       "guest_additions_sha256": "5a0d2512f78aac49e6ab9e3514e6d81bc4e8f00df2101ed2ba0bb68d56b21136",
       "guest_additions_url": "VBoxGuestAdditions.iso",
@@ -207,13 +207,28 @@ mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
         ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"]
 
       ],
- 	"boot_command": [
-	"<tab> text preseed=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter><wait>"
+ 	 "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}} <wait>",
+        "debian-installer=en_US.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=en_US.UTF-8 <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
       ],
-      "boot_wait": "5s",
+      "boot_wait": "10s",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "http_directory": "http",
-      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -h 0",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_port": 22,
