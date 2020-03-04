@@ -2,6 +2,7 @@
 
 ## The plan 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/idea.PNG)
+![](https://blog.secureideas.com/wp-content/uploads/2018/09/packer_vagrant_eco.png)
 - build the iso
     - kali-tools-information-gathering
     - kali-tools-reporting
@@ -69,6 +70,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
 - [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
 - [network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
+- [packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
 
 ### Preceed
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
@@ -77,7 +79,9 @@ Preseeding provides a way to set answers to questions asked during the installat
 - [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
 - [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
-
+- [video kali-packer](https://www.youtube.com/watch?v=uDLC2JMCLek)
+- [automating-red-team-homelabs-part-1-kali-automation](https://blog.secureideas.com/2018/09/automating-red-team-homelabs-part-1-kali-automation.html)
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
 #### preseed.cfg
 ```
 d-i debian-installer/locale string en_US.UTF-8
