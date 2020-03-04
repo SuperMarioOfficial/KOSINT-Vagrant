@@ -100,19 +100,26 @@ Packer/
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
+      "guest_additions_interface": "iso_interface",
+      "guest_additions_mode": "attach",
+      "guest_additions_sha256": "5a0d2512f78aac49e6ab9e3514e6d81bc4e8f00df2101ed2ba0bb68d56b21136",
+      "guest_additions_url": "VBoxGuestAdditions.iso",
       "vboxmanage": [
         ["modifyvm","{{.Name}}","--memory","8000"],
         ["modifyvm","{{.Name}}","--cpus","3"], 
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
 	["modifyvm","{{.Name}}", "--nic2", "intnet"],
-	["modifyvm","{{.Name}}", "--intnet2", "whonix"]
+	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
+	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
+        ["modifyvm", "{{.Name}}", "--usb", "on"],
+        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"]
 
       ],
  	"boot_command": [
 	"<tab> text preseed=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter><wait>"
       ],
-      "boot_wait": "10s",
+      "boot_wait": "5s",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "http_directory": "http",
       "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -h 0",
@@ -260,4 +267,8 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 
 ```
 --nic<1-N> none|null|nat|natnetwork|bridged|intnet|hostonly|generic: Configures the type of networking for each of the VM's virtual network cards. Options are: not present (none), not connected to the host (null), use network address translation (nat), use the new network address translation engine (natnetwork), bridged networking (bridged), or use internal networking (intnet), host-only networking (hostonly), or access rarely used sub-modes (generic). These options correspond to the modes described in Section 6.2, “Introduction to Networking Modes”. 
+```
+
+```
+certutil -hashfile VBoxGuestAdditions.iso SHA256
 ```
