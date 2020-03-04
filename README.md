@@ -47,6 +47,10 @@ label install
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
 
+
+
+
+# configure virtualbox with packer
 ### Tree structure project
 ```
 Packer/
@@ -59,10 +63,7 @@ Packer/
               |--- cleanup.sh
 	      |--- ansible.sh
 ```
-
-
-# configure virtualbox with packer
-### Packer Intro
+### Packer 
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
 - [packer-kali-linux/blob/master/kali.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
 - [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
@@ -166,7 +167,7 @@ mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
 
 ```
 
-### Packer configuration
+### packer.json
 ```
 {
   "variables": {
