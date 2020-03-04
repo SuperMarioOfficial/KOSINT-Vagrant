@@ -167,7 +167,7 @@ mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
 
 ```
 
-### packer.json
+### k-osint.json
 ```
 {
   "variables": {
