@@ -181,6 +181,8 @@ d-i passwd/user-password-again password vagrant
 
 ## Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
+
+### References:
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
 - [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
@@ -192,7 +194,8 @@ Preseeding provides a way to set answers to questions asked during the installat
 ### Examples:
 - [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 - [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
-## preseed.cfg [source/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
+## preseed.cfg 
+#### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
 d-i console-keymaps-at/keymap select us
@@ -251,6 +254,10 @@ d-i passwd/username string vagrant
 d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 
+# root
+d-i passwd/root-password password vagrant
+d-i passwd/root-password-again password vagrant
+
 d-i apt-setup/use_mirror boolean true
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean false
@@ -259,6 +266,13 @@ d-i finish-install/reboot_in_progress note
 
 # Enable SSH
 d-i preseed/late_command string in-target systemctl enable ssh
+```
+
+### Notes preseed file
+- **root password** do not forget to check if the root password has been set, for instance these lines were missing from the original file. Nb: some preseed files disable normal account creation, but in this preseed file there is a vagrant login account.
+```# root
+d-i passwd/root-password password vagrant
+d-i passwd/root-password-again password vagrant
 ```
 
 # Provisioning with ansible playbook
