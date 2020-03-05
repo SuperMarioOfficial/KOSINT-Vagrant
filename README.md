@@ -96,7 +96,7 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
 {
   "variables": {
     "vm_name": "k-osint",
-    "disk_size": "10000",
+    "disk_size": "80000",
     "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
     "iso_checksum_type": "sha1",
     "iso_url": "k-osint.iso",
@@ -105,7 +105,7 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
   },
   "description": "{{user `box_desc`}}",
   "builders": [
-    {
+	{ 
       "headless": false,
       "type": "virtualbox-iso",
       "virtualbox_version_file": ".vbox_version",
@@ -115,12 +115,16 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
-      "guest_additions_interface": "sata",
-      "guest_additions_mode": "attach",
-      "guest_additions_sha256": "5a0d2512f78aac49e6ab9e3514e6d81bc4e8f00df2101ed2ba0bb68d56b21136",
-      "guest_additions_url": "VBoxGuestAdditions.iso",
+      "http_directory": "http",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP now",
+      "communicator": "ssh",
+      "ssh_username": "root",
+      "ssh_password": "toor",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "guest_additions_mode": "disable",
       "vboxmanage": [
-        ["modifyvm","{{.Name}}","--memory","8000"],
+        ["modifyvm","{{.Name}}","--memory","6000"],
         ["modifyvm","{{.Name}}","--cpus","3"], 
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
@@ -128,44 +132,36 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
 	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
 	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
         ["modifyvm", "{{.Name}}", "--usb", "on"],
-        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"]
+        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"],
+	["modifyvm", "{{.Name}}", "--clipboard-mode", "bidirectional"],
+        ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"]
 
-      ],
- 	 "boot_command": [
-        "<esc><wait>",
-        "install <wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}} <wait>",
-        "debian-installer=en_US.UTF-8 <wait>",
-        "auto <wait>",
-        "locale=en_US.UTF-8 <wait>",
-        "kbd-chooser/method=us <wait>",
-        "keyboard-configuration/xkb-keymap=us <wait>",
-        "netcfg/get_hostname={{ .Name }} <wait>",
-        "netcfg/get_domain=vagrantup.com <wait>",
-        "fb=false <wait>",
-        "debconf/frontend=noninteractive <wait>",
-        "console-setup/ask_detect=false <wait>",
-        "console-keymaps-at/keymap=us <wait>",
-        "grub-installer/bootdev=/dev/sda <wait>",
-        "<enter><wait>"
-      ],
-      "boot_wait": "10s",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "http_directory": "http",
-      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP now",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "ssh_port": 22,
-      "ssh_wait_timeout": "10000s"
+	],
+
+	"boot_wait": "5s",
+        "boot_command": [ 
+         "<esc><wait>",
+        "/install/vmlinuz noapic ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+        "hostname={{ .Name }} ",
+        "auto=true ",
+        "interface=auto ",
+        "domain=vm ",
+        "initrd=/install/initrd.gz -- <enter>"
+      ]
+
     }
 ],
-  "post-processors": [  {
-    "type": "vagrant",
-    "keep_input_artifact": true,
-    "output" : "{{user `box_name`}}",
-    "only": ["virtualbox-iso"]
-
-  }
+"provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo -S sh '{{.Path}}'",
+      "scripts": [
+        "{{template_dir}}/scripts/cleanup.sh",
+	"{{template_dir}}/scripts/virtualbox.sh"
+      ],
+      "expect_disconnect": true
+      }
   ]
 }
 ```
