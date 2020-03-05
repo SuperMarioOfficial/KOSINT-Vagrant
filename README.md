@@ -163,6 +163,10 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
   ]
 }
 ```
+#### Notes:
+- ```/install/vmlinuz noapic``` it tells the [kernel](https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html) to not make use of any [IOAPICs](https://wiki.osdev.org/IOAPIC) that may be present in the system.
+
+
 #### provisioners:
 **Be careful to set ssh username and password to the same username/password of the preceed or it won't work.**
 - k-osint.json
