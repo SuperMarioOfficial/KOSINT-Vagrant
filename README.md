@@ -165,6 +165,16 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
 ```
 #### provisioners:
 **Be careful to set ssh username and password to the same username/password of the preceed or it won't work.**
+- k-osint.json
+```
+"ssh_username": "vagrant",
+"ssh_password": "vagrant",
+```
+- preseed file 
+```
+d-i passwd/user-password password vagrant
+d-i passwd/user-password-again password vagrant
+```
 **Important**, remember to provide the sudo rights to your scripts. Most of the examples has a echo <something> and if you are doing it for the first time is easier to overlook that you are piping the password. A better way to do it, it is not to hardcode the password, but to echo the ssh_pass variable.
 ```
 "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
