@@ -11,7 +11,7 @@
     - Install docker
     - pull docker images
 - create a vagrant box
-------
+---
 
 # Build the ISO
 ## steps:
@@ -58,7 +58,7 @@ Packer/
 	      |--- ansible.sh
 ```
 ### What is Packer?
-The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
+The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably. [To know more visit learn.hashicorp.com](https://learn.hashicorp.com/packer#operations-and-development)
 
 ### Pakcer configuration examples
 - [bento/example1.json](https://github.com/chef/bento/blob/master/packer_templates/debian/debian-10.2-amd64.json)
@@ -68,6 +68,8 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [studentota2lvl/packer-Windows-Server/example5.json](https://github.com/studentota2lvl/packer-Windows-Server-2016/blob/1b9d4c975a1449f67a94911ae233e75fb48a3101/windows_2016.json)
 - [geerlingguy/exaple6.json](https://github.com/geerlingguy/packer-boxes/blob/master/debian10/box-config.json)
 - [capistrano/example7.json](https://github.com/capistrano/packer/blob/master/capistrano-Debian_7.4_64.json)
+- [stefco/geco_vm.json](https://github.com/stefco/geco_vm/tree/51b80576ed37fd8a53cac6e05db232c1bf1e6f70)
+- [xuxiaodong/.json](https://github.com/xuxiaodong/kvm-example/blob/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/archlinux-2020.02.01-amd64.json)
 
 ### References:
 - [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
@@ -82,8 +84,14 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [packer.io/docs/templates/provisioners](https://packer.io/docs/templates/provisioners.html)
 - - [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
 - [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
+- [run provisioner on specidfic build ](https://packer.io/docs/templates/provisioners.html)
+- [how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes](https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes/)
+- [provisioning-development-environment](https://www.endpoint.com/blog/2014/03/14/provisioning-development-environment_14)
 
-## Packer configuration file k-osint.json
+- [search?q=%22Delete+X11+libraries%22&type=Code](https://github.com/search?q=%22Delete+X11+libraries%22&type=Code)
+- ["dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge"](https://github.com/search?l=Shell&q=%22dpkg+--list+%7C+awk+%27%7B+print+%242+%7D%27+%7C+grep+linux-source+%7C+xargs+apt-get+-y+purge%22&type=Code)
+ 
+### Packer configuration file k-osint.json
 ```
 {
   "variables": {
@@ -178,6 +186,8 @@ d-i passwd/user-password-again password vagrant
 ```
 "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
 ```
+	
+---
 
 ## Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
@@ -194,7 +204,7 @@ Preseeding provides a way to set answers to questions asked during the installat
 ### Examples:
 - [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 - [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
-## preseed configuration file
+### preseed configuration file
 #### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
@@ -267,16 +277,37 @@ d-i finish-install/reboot_in_progress note
 # Enable SSH
 d-i preseed/late_command string in-target systemctl enable ssh
 ```
-
 ### Notes preseed file
 - **root password** do not forget to check if the root password has been set, for instance these lines were missing from the original file. Nb: some preseed files disable normal account creation, but in this preseed file there is a vagrant login account.
 ```# root
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 ```
+---
+## Provisioners Scripts
+Provisioning can be done in many stages and not only here, and in different ways. 
+- inline
+- shell
+- ansible
+Or it can be performed with Vagrant later on. 
+```
+   "provisioners": [
+    		{
+      "type": "shell",
+      "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -S -E sh -eux '{{ .Path }}'",
+      "scripts": [ "{{template_dir}}/scripts/cleanup.sh"],
+      "expect_disconnect": true
+      }]
+```
+### Scripts: 
+- [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
+- [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
 
-# Provisioning with ansible playbook
-## How to create a playbook
+### References:
+
+
+### Provisioning with ansible playbook
+#### How to create a playbook
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
 - [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
 ```
@@ -410,3 +441,8 @@ This application assists in managing attack infrastructure for penetration teste
 --nic<1-N> none|null|nat|natnetwork|bridged|intnet|hostonly|generic: Configures the type of networking for each of the VM's virtual network cards. Options are: not present (none), not connected to the host (null), use network address translation (nat), use the new network address translation engine (natnetwork), bridged networking (bridged), or use internal networking (intnet), host-only networking (hostonly), or access rarely used sub-modes (generic). These options correspond to the modes described in Section 6.2, “Introduction to Networking Modes”. 
 ```
 
+# FAQ
+### Sudo Issues
+- [packer-cant-execute-shell-provisioner-as-sudo](https://stackoverflow.com/questions/48537171/packer-cant-execute-shell-provisioner-as-sudo)
+- [packer-build-fails-due-to-tty-needed-for-sudo](https://stackoverflow.com/questions/31788902/packer-build-fails-due-to-tty-needed-for-sudo)
+- [sudo issues](https://stackoverflow.com/questions/34706972/simple-shell-inline-provisionning)
