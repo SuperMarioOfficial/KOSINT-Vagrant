@@ -1,6 +1,5 @@
-# K-OSINT.iso
-
-## The plan 
+# The K-OSINT.iso automation project 
+#### Virtualbox + Kali Linux personalized ISO + Packer + Ansible + Vagrant + Docker
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/idea.PNG)
 ![](https://blog.secureideas.com/wp-content/uploads/2018/09/packer_vagrant_eco.png)
 - build the iso
@@ -14,17 +13,16 @@
 - create a vagrant box
 ------
 
-
 # Build the ISO
 ## steps:
-#### 1
+#### 1 Clone the live-build
 ``` bash
 sudo apt update
 sudo apt install git live-build cdebootstrap devscripts -y
 git clone git://gitlab.com/kalilinux/build-scripts/live-build-config.git
 cd live-build-config
 ```
-#### 2 https://tools.kali.org/kali-metapackages
+#### 2 Select the packages [Full List](https://tools.kali.org/kali-metapackages)
 ***$vi*** ``` kali-config/variant-default/package-lists/kali.list.chroot```
 ```
 # You always want those
@@ -47,8 +45,7 @@ label install
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
 
-# configure virtualbox with packer
-### Tree structure project
+# Automate the creation of a Vbox machine with Packer configuration files
 ```
 Packer/
       |---k-osint.json
@@ -60,17 +57,9 @@ Packer/
 	      |--- virtualbox.sh
 	      |--- ansible.sh
 ```
-# Packer 
+### What is Packer?
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably.
-- [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
-- [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
-- [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
-- [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
-- [eanderalx.org/network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
-- [frankietyrine/packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
-- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
-- [bento/packer_templates](https://github.com/chef/bento/tree/master/packer_templates)
-- [Automated Install Kali Linux (Packer) youtube](https://www.youtube.com/watch?v=uDLC2JMCLek)
+
 ### Pakcer configuration examples
 - [bento/example1.json](https://github.com/chef/bento/blob/master/packer_templates/debian/debian-10.2-amd64.json)
 - [buffersandbeer/example2.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
@@ -80,13 +69,21 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [geerlingguy/exaple6.json](https://github.com/geerlingguy/packer-boxes/blob/master/debian10/box-config.json)
 - [capistrano/example7.json](https://github.com/capistrano/packer/blob/master/capistrano-Debian_7.4_64.json)
 
-#### W10, find SHA1 and SHA256
-```
-certutil -hashfile k-osint.iso SHA1
-certutil -hashfile VBoxGuestAdditions.iso SHA256
-```
+### References:
+- [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
+- [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
+- [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
+- [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
+- [eanderalx.org/network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
+- [frankietyrine/packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
+- [bento/packer_templates](https://github.com/chef/bento/tree/master/packer_templates)
+- [Automated Install Kali Linux (Packer) youtube](https://www.youtube.com/watch?v=uDLC2JMCLek)
+- [packer.io/docs/templates/provisioners](https://packer.io/docs/templates/provisioners.html)
+- - [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
+- [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
 
-## k-osint.json
+## Packer configuration file k-osint.json
 ```
 {
   "variables": {
@@ -156,11 +153,17 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
       }]
 }
 ```
-## Notes
+### Notes packer configuration file
+#### variables:
+- W10, find SHA1 and SHA256
+```
+certutil -hashfile k-osint.iso SHA1
+certutil -hashfile VBoxGuestAdditions.iso SHA256
+```
 #### boot_command:
 - ```/install/vmlinuz noapic``` it tells the [kernel](https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html) to not make use of any [IOAPICs](https://wiki.osdev.org/IOAPIC) that may be present in the system.
 #### provisioners:
-**Be careful to set ssh username and password to the same username/password of the preceed or it won't work.**
+Be careful to set ssh username and password to the same username/password of the preceed or it won't work.
 - k-osint.json
 ```
 "ssh_username": "vagrant",
@@ -171,15 +174,12 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
 d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 ```
-**Important**, remember to provide the sudo rights to your scripts. Most of the examples echo <something>, that probably is not the right password, and if you are doing it for the first time it is easier to overlook that you are piping the wrong password.Although, a better way to do this is not to hardcode the password, but to echo the ssh_pass variable in this way:
+- Remember to provide the **sudo rights to your scripts**. Most of the examples echo <something>, that probably is not the right password, and if you are doing it for the first time it is easier to overlook that you are piping the wrong password.Although, a better way to do this is not to hardcode the password, but to echo the ssh_pass variable in this way:
 ```
 "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
 ```
-- [packer.io/docs/templates/provisioners](https://packer.io/docs/templates/provisioners.html)
-- - [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
-- [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
 
-## Preceed
+## Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
