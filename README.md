@@ -335,101 +335,78 @@ Provisioning can be done in many stages and not only here, and in different ways
 
 ## script cleaup.sh 
 ``` bash
-#!/bin/sh -eux
-logz='cleanup.log'
+{
+  "variables": {
+    "vm_name": "k-osint2",
+    "disk_size": "80000",
+    "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
+    "iso_checksum_type": "sha1",
+    "iso_url": "k-osint.iso",
+    "box_name" : "k-osint", 
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant", 
+    
+    "box_desc" : "Official Kali Linux OS distro of Tracelab"
 
-echo "##############################################################################"
-echo "# 01_Update System                                                           #" | tee -a $logz
-echo "##############################################################################"
-apt-get -y -qq update | tee -a $logz
-apt-get update --fix-missing | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get autoremove -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get -y -qq dist-upgrade | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get -y -qq install linux-headers-$(uname -r) | tee -a $logz
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+	{ 
+      "headless": false,
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "Debian_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "http_directory": "http",
+      "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S /sbin/shutdown -hP now",
+      "communicator": "ssh",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant", 
+      "ssh_port": 22,
+      "ssh_wait_timeout": "60m",
+      "guest_additions_mode": "disable",
+      "vboxmanage": [
+        ["modifyvm","{{.Name}}","--memory","6000"],
+        ["modifyvm","{{.Name}}","--cpus","3"], 
+	["modifyvm","{{.Name}}","--audio","none"], 
+	["modifyvm","{{.Name}}", "--nic1", "nat"],
+	["modifyvm","{{.Name}}", "--nic2", "intnet"],
+	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
+	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
+        ["modifyvm", "{{.Name}}", "--usb", "on"],
+        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"],
+	["modifyvm", "{{.Name}}", "--clipboard-mode", "bidirectional"],
+        ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"]
 
-echo "##############################################################################"
-echo "# 02_Cleaning                                                                #" | tee -a $logz
-echo "##############################################################################"
-echo" Delete linux-headers" | tee -a $logz
-dpkg --list | awk '{ print $2 }' | grep 'linux-headers' | grep -vF "$(uname -r)" | xargs apt-get -y purge | tee -a $logz
-echo "Delete linux-image" | tee -a $logz
-dpkg --list | awk '{ print $2 }' | grep 'linux-image' | grep -vF "$(uname -r)" | xargs apt-get -y purge | tee -a $logz
-echo "Delete Linux source" | tee -a $logz
-dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge | tee -a $logz
+	],
 
-echo "Delete linux firmaware ... " | tee -a $logz
-apt-get -y purge linux-firmware | tee -a $logz
+	"boot_wait": "5s",
+        "boot_command": [ 
+         "<esc><wait>",
+        "/install/vmlinuz noapic ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+        "hostname={{ .Name }} ",
+        "auto=true ",
+        "interface=auto ",
+        "domain=vm ",
+        "initrd=/install/initrd.gz -- <enter>"
+      ]
 
-echo" Delete development packages" | tee -a $logz
-dpkg --list | awk '{ print $2 }' | grep -- '-dev$' | xargs apt-get -y purge; | tee -a $logz
+    }
+],
+   "provisioners": [
+    		{
+      "type": "shell",
+      "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -S -E sh -eux '{{ .Path }}'",
+      "scripts": [ "{{template_dir}}/scripts/cleanup.sh","{{template_dir}}/scripts/virtualbox.sh"],
+      "expect_disconnect": true
+      }]
 
-echo "Delete X11 libraries" | tee -a $logz
-apt-get -y purge libx11-data xauth libxmuu1 libxcb1 libx11-6 libxext6; | tee -a $logz
-
-echo "Delete obsolete networking" | tee -a $logz
-apt-get -y purge ppp pppconfig pppoeconf; | tee -a $logz
-
-echo "Delete oddities" | tee -a $logz
-apt-get -y purge popularity-contest; | tee -a $logz
-apt-get -y purge installation-report; | tee -a $logz
-
-echo "Delete Packages" | tee -a $logz
-apt-get -y autoremove; | tee -a $logz
-apt-get -y clean; | tee -a $logz
- 
-echo " truncate any logs that have built up during the install" | tee -a $logz
-find /var/log -type f -exec truncate --size=0 {} \; | tee -a $logz
-find /var/log/ -name "*.log" -exec rm -f {} \; | tee -a $logz
-
-echo "Cleaning up dpkg backup files" | tee -a $logz
-find /var/cache/debconf -type f -name '*-old' | xargs rm -f | tee -a $logz
- 
-echo " Whiteout root" | tee -a $logz
-count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}') | tee -a $logz
-count=$(($count-1)) | tee -a $logz
-dd if=/dev/zero of=/tmp/whitespace bs=1M count=$count || echo "dd exit code $? is suppressed"; | tee -a $logz
-rm /tmp/whitespace | tee -a $logz
-
-echo "Whiteout /boot" | tee -a $logz
-count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')| tee -a $logz
-count=$(($count-1)) | tee -a $logz
-dd if=/dev/zero of=/boot/whitespace bs=1M count=$count || echo "dd exit code $? is suppressed"; | tee -a $logz
-rm /boot/whitespace | tee -a $logz
-
-echo "Blank netplan machine-id (DUID) so machines get unique ID generated on boot." | tee -a $logz
-truncate -s 0 /etc/machine-id | tee -a $logz
-
-echo "Zero out the free space to save space in the final image" | tee -a $logz
-dd if=/dev/zero of=/EMPTY bs=1M || true | tee -a $logz
-rm -f /EMPTY | tee -a $logz
-
-echo "clear the history so our install isn't there" | tee -a $logz
-export HISTSIZE=0 | tee -a $logz 
-rm -f /root/.wget-hsts | tee -a $logz
-
-
-
-echo "##############################################################################"
-echo "# 03_Install_VBoxGuestAdditions                                              #"| tee -a $logz
-echo "##############################################################################"
-echo " Mount the disk image VBoxGuestAdditions" | tee -a $logz 
-cd /tmp | tee -a $logz
-mkdir /tmp/isomount | tee -a $logz
-mount -o loop VBoxGuestAdditions.iso /tmp/isomou | tee -a $logznt
-
-echo " Install the drivers VBoxGuestAdditions" | tee -a $logz
-/tmp/isomount/VBoxLinuxAdditions.run || true | tee -a $logz
-
-echo " Cleanup VBoxGuestAdditions" | tee -a $logz
-umount isomount | tee -a $logz
-
-
-echo "##############################################################################"
-echo "# 04_Reboot                                                                  #"| tee -a $logz
-echo "##############################################################################"
-shutdown -r now | tee -a $logz
+}
 ```
 
 
