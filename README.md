@@ -1,5 +1,3 @@
-![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
 # The K-OSINT.iso automation project 
 #### Virtualbox + Kali Linux personalized ISO + Packer + Ansible + Vagrant + Docker
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/idea.PNG)
@@ -46,6 +44,9 @@ label install
     initrd /install/initrd.gz
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
 # Automate the creation of a Vbox machine with Packer configuration files
 ```
@@ -191,6 +192,9 @@ d-i passwd/user-password-again password vagrant
 	
 ---
 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
+
 ## Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
 
@@ -285,7 +289,10 @@ d-i preseed/late_command string in-target systemctl enable ssh
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 ```
----
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
+
 ## Provisioners Scripts
 Provisioning can be done in many stages and not only here, and in different ways. [Provisioners](https://packer.io/docs/provisioners/shell.html) use builtin and third-party software to install and configure the machine image after booting. Provisioners prepare the system for use, so common use cases for provisioners include:
 - installing packages
@@ -320,6 +327,8 @@ Provisioning can be done in many stages and not only here, and in different ways
 ### Scripts: 
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
 - [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 ## script cleaup.sh 
 ``` bash
@@ -494,6 +503,8 @@ hosts: localhost
     register: file_reboot_required
 ```
 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
 # Create Vagrant box
 - [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
@@ -521,6 +532,8 @@ USER anon
 
 CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ```
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 # Other
 ### XFCE GUI
@@ -555,6 +568,7 @@ This application assists in managing attack infrastructure for penetration teste
 ```
 --nic<1-N> none|null|nat|natnetwork|bridged|intnet|hostonly|generic: Configures the type of networking for each of the VM's virtual network cards. Options are: not present (none), not connected to the host (null), use network address translation (nat), use the new network address translation engine (natnetwork), bridged networking (bridged), or use internal networking (intnet), host-only networking (hostonly), or access rarely used sub-modes (generic). These options correspond to the modes described in Section 6.2, “Introduction to Networking Modes”. 
 ```
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 # FAQ
 ### Sudo Issues
