@@ -175,7 +175,7 @@ certutil -hashfile VBoxGuestAdditions.iso SHA256
 d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 ```
-**Important**, remember to provide the sudo rights to your scripts. Most of the examples has a echo <something> and if you are doing it for the first time is easier to overlook that you are piping the password. A better way to do it, it is not to hardcode the password, but to echo the ssh_pass variable.
+**Important**, remember to provide the sudo rights to your scripts. Most of the examples echo <something>, that probably is not the right password, and if you are doing it for the first time it is easier to overlook that you are piping the wrong password.Although, a better way to do this is not to hardcode the password, but to echo the ssh_pass variable in this way:
 ```
 "execute_command": "echo '{{user `ssh_pass`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
 ```
