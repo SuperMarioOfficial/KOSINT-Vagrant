@@ -337,8 +337,6 @@ Provisioning can be done in many stages and not only here, and in different ways
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
 - [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
 
-![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
 ## script cleaup.sh 
 ``` bash
 #!/bin/sh -eux
@@ -422,7 +420,6 @@ shutdown -r now | tee -a $logz
 
 ```
 
-
 ### Provisioning with ansible playbook
 #### How to create a playbook
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
@@ -503,6 +500,8 @@ hosts: localhost
 - [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 ### How to create a box
 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
 # Docker
 ```
@@ -533,3 +532,6 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 - [packer-cant-execute-shell-provisioner-as-sudo](https://stackoverflow.com/questions/48537171/packer-cant-execute-shell-provisioner-as-sudo)
 - [packer-build-fails-due-to-tty-needed-for-sudo](https://stackoverflow.com/questions/31788902/packer-build-fails-due-to-tty-needed-for-sudo)
 - [sudo issues](https://stackoverflow.com/questions/34706972/simple-shell-inline-provisionning)
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
