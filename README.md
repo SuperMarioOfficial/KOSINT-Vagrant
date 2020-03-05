@@ -70,8 +70,100 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
 - [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
 - [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
-- [network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
-- [packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
+- [eanderalx.org/network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
+- [frankietyrine/packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
+- [bento/packer_templates](https://github.com/chef/bento/tree/master/packer_templates)
+- [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
+- [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
+
+#### Examples: 
+- [bento/example1.json](https://github.com/chef/bento/blob/master/packer_templates/debian/debian-10.2-amd64.json)
+- [buffersandbeer/Example2.json](https://github.com/buffersandbeer/packer-kali-linux/blob/master/kali.json)
+#### W10, find SHA1 and SHA256
+```
+certutil -hashfile k-osint.iso SHA1
+certutil -hashfile VBoxGuestAdditions.iso SHA256
+```
+
+### k-osint.json
+```
+{
+  "variables": {
+    "vm_name": "k-osint",
+    "disk_size": "10000",
+    "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
+    "iso_checksum_type": "sha1",
+    "iso_url": "k-osint.iso",
+    "box_name" : "k-osint", 
+    "box_desc" : "Official Kali Linux OS distro of Tracelab"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": false,
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "Debian_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "guest_additions_interface": "sata",
+      "guest_additions_mode": "attach",
+      "guest_additions_sha256": "5a0d2512f78aac49e6ab9e3514e6d81bc4e8f00df2101ed2ba0bb68d56b21136",
+      "guest_additions_url": "VBoxGuestAdditions.iso",
+      "vboxmanage": [
+        ["modifyvm","{{.Name}}","--memory","8000"],
+        ["modifyvm","{{.Name}}","--cpus","3"], 
+	["modifyvm","{{.Name}}","--audio","none"], 
+	["modifyvm","{{.Name}}", "--nic1", "nat"],
+	["modifyvm","{{.Name}}", "--nic2", "intnet"],
+	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
+	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
+        ["modifyvm", "{{.Name}}", "--usb", "on"],
+        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"]
+
+      ],
+ 	 "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}} <wait>",
+        "debian-installer=en_US.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=en_US.UTF-8 <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP now",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s"
+    }
+],
+  "post-processors": [  {
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "output" : "{{user `box_name`}}",
+    "only": ["virtualbox-iso"]
+
+  }
+  ]
+}
+```
 
 ### Preceed
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
@@ -82,8 +174,9 @@ Preseeding provides a way to set answers to questions asked during the installat
 - [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
 - [video kali-packer](https://www.youtube.com/watch?v=uDLC2JMCLek)
 - [automating-red-team-homelabs-part-1-kali-automation](https://blog.secureideas.com/2018/09/automating-red-team-homelabs-part-1-kali-automation.html)
-- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
-#### preseed.cfg
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html) 
+
+#### preseed.cfg [source](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
 d-i console-keymaps-at/keymap select us
@@ -165,85 +258,6 @@ mysql-server-5.5 mysql-server-5.5/really_downgrade boolean false
 mysql-server-5.5 mysql-server/password_mismatch error
 mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
 
-```
-
-### k-osint.json
-```
-{
-  "variables": {
-    "vm_name": "k-osint",
-    "disk_size": "10000",
-    "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
-    "iso_checksum_type": "sha1",
-    "iso_url": "k-osint.iso",
-    "box_name" : "k-osint", 
-    "box_desc" : "Official Kali Linux OS distro of Tracelab"
-  },
-  "description": "{{user `box_desc`}}",
-  "builders": [
-    {
-      "headless": false,
-      "type": "virtualbox-iso",
-      "virtualbox_version_file": ".vbox_version",
-      "guest_os_type": "Debian_64",
-      "vm_name": "{{user `vm_name`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "disk_size": "{{user `disk_size`}}",
-      "guest_additions_interface": "sata",
-      "guest_additions_mode": "attach",
-      "guest_additions_sha256": "5a0d2512f78aac49e6ab9e3514e6d81bc4e8f00df2101ed2ba0bb68d56b21136",
-      "guest_additions_url": "VBoxGuestAdditions.iso",
-      "vboxmanage": [
-        ["modifyvm","{{.Name}}","--memory","8000"],
-        ["modifyvm","{{.Name}}","--cpus","3"], 
-	["modifyvm","{{.Name}}","--audio","none"], 
-	["modifyvm","{{.Name}}", "--nic1", "nat"],
-	["modifyvm","{{.Name}}", "--nic2", "intnet"],
-	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
-	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
-        ["modifyvm", "{{.Name}}", "--usb", "on"],
-        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"]
-
-      ],
- 	 "boot_command": [
-        "<esc><wait>",
-        "install <wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}} <wait>",
-        "debian-installer=en_US.UTF-8 <wait>",
-        "auto <wait>",
-        "locale=en_US.UTF-8 <wait>",
-        "kbd-chooser/method=us <wait>",
-        "keyboard-configuration/xkb-keymap=us <wait>",
-        "netcfg/get_hostname={{ .Name }} <wait>",
-        "netcfg/get_domain=vagrantup.com <wait>",
-        "fb=false <wait>",
-        "debconf/frontend=noninteractive <wait>",
-        "console-setup/ask_detect=false <wait>",
-        "console-keymaps-at/keymap=us <wait>",
-        "grub-installer/bootdev=/dev/sda <wait>",
-        "<enter><wait>"
-      ],
-      "boot_wait": "10s",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "http_directory": "http",
-      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP now",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "ssh_port": 22,
-      "ssh_wait_timeout": "10000s"
-    }
-],
-  "post-processors": [  {
-    "type": "vagrant",
-    "keep_input_artifact": true,
-    "output" : "{{user `box_name`}}",
-    "only": ["virtualbox-iso"]
-
-  }
-  ]
-}
 ```
 
 # Provisioning with ansible playbook
@@ -371,10 +385,13 @@ After a research done, I came to the conclusion that xfce is probably the lighte
 - https://networking.ringofsaturn.com/Unix/Create_Virtual_Machine_VBoxManage.php
 - [Chapter 6. Virtual Networking](https://www.virtualbox.org/manual/ch06.html)
 
+### Hide and Sneak
+This application assists in managing attack infrastructure for penetration testers by providing an interface to rapidly deploy, manage, and take down various cloud services.
+- [link](https://github.com/rmikehodges/hideNsneak)
+
+### Cloud-formation
+- [automated-red-team-infrastructure-deployment-with-terraform](https://rastamouse.me/2017/08/automated-red-team-infrastructure-deployment-with-terraform---part-1/)
 ```
 --nic<1-N> none|null|nat|natnetwork|bridged|intnet|hostonly|generic: Configures the type of networking for each of the VM's virtual network cards. Options are: not present (none), not connected to the host (null), use network address translation (nat), use the new network address translation engine (natnetwork), bridged networking (bridged), or use internal networking (intnet), host-only networking (hostonly), or access rarely used sub-modes (generic). These options correspond to the modes described in Section 6.2, “Introduction to Networking Modes”. 
 ```
 
-```
-certutil -hashfile VBoxGuestAdditions.iso SHA256
-```
