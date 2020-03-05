@@ -84,6 +84,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 - [quarkslab/example4.json](https://github.com/quarkslab/packer-debian/blob/master/debian.json)
 - [studentota2lvl/packer-Windows-Server/example5.json](https://github.com/studentota2lvl/packer-Windows-Server-2016/blob/1b9d4c975a1449f67a94911ae233e75fb48a3101/windows_2016.json)
 - [geerlingguy/exaple6.json](https://github.com/geerlingguy/packer-boxes/blob/master/debian10/box-config.json)
+- [capistrano/example7.json](https://github.com/capistrano/packer/blob/master/capistrano-Debian_7.4_64.json)
 #### W10, find SHA1 and SHA256
 ```
 certutil -hashfile k-osint.iso SHA1
