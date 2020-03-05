@@ -193,7 +193,7 @@ d-i clock-setup/utc boolean true
 d-i time/zone string US/Eastern
 
 # Disable security, volatile and backports
-d-i apt-setup/services-select multiselect 
+d-i apt-setup/services-select multiselect
 
 # Enable contrib and non-free
 d-i apt-setup/non-free boolean true
@@ -218,8 +218,8 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 # Disable CDROM entries after install
 d-i apt-setup/disable-cdrom-entries boolean true
 
-# Upgrade installed packages
-d-i pkgsel/upgrade select full-upgrade
+# Install default packages
+tasksel tasksel/first multiselect desktop-xfce, meta-default, standard
 
 # Change default hostname
 d-i netcfg/get_hostname string kali
@@ -230,10 +230,11 @@ d-i netcfg/dhcp_timeout string 60
 
 d-i hw-detect/load_firmware boolean false
 
-# Do not create a normal user account
-d-i passwd/make-user boolean false
-d-i passwd/root-password password toor
-d-i passwd/root-password-again password toor
+# vagrant user account
+d-i passwd/user-fullname string vagrant
+d-i passwd/username string vagrant
+d-i passwd/user-password password vagrant
+d-i passwd/user-password-again password vagrant
 
 d-i apt-setup/use_mirror boolean true
 d-i grub-installer/only_debian boolean true
@@ -241,24 +242,8 @@ d-i grub-installer/with_other_os boolean false
 d-i grub-installer/bootdev string /dev/sda
 d-i finish-install/reboot_in_progress note
 
-# Disable popularity-contest
-popularity-contest popularity-contest/participate boolean false
-
-kismet kismet/install-setuid boolean false
-kismet kismet/install-users string
-
-sslh sslh/inetd_or_standalone select standalone
-
-mysql-server-5.5 mysql-server/root_password_again password
-mysql-server-5.5 mysql-server/root_password password
-mysql-server-5.5 mysql-server/error_setting_password error
-mysql-server-5.5 mysql-server-5.5/postrm_remove_databases boolean false
-mysql-server-5.5 mysql-server-5.5/start_on_boot boolean true
-mysql-server-5.5 mysql-server-5.5/nis_warning note
-mysql-server-5.5 mysql-server-5.5/really_downgrade boolean false
-mysql-server-5.5 mysql-server/password_mismatch error
-mysql-server-5.5 mysql-server/no_upgrade_when_using_ndb error
-
+# Enable SSH
+d-i preseed/late_command string in-target systemctl enable ssh
 ```
 
 # Provisioning with ansible playbook
