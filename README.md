@@ -174,7 +174,7 @@ Be careful to set ssh username and password to the same username/password of the
 d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 ```
-- Remember to provide the **sudo rights to your scripts**. Most of the examples echo <something>, that probably is not the right password, and if you are doing it for the first time it is easier to overlook that you are piping the wrong password.Although, a better way to do this is not to hardcode the password, but to echo the ssh_pass variable in this way:
+- Remember to provide the **sudo rights to your scripts**. Most of the examples echo <something>, that probably is not the right password, and if you are doing it for the first time it is easier to overlook that you are piping the wrong password.Although, a better way to do this is not to hardcode the password, but to echo the ssh_pass variable, lastly do not forget to add the ssh_password to the list of variables otherwise it will fail.
 ```
 "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
 ```
@@ -194,7 +194,7 @@ Preseeding provides a way to set answers to questions asked during the installat
 ### Examples:
 - [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 - [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
-## preseed.cfg 
+## preseed configuration file
 #### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
