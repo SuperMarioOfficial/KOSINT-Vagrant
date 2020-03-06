@@ -19,6 +19,7 @@
 	- check automated-build-preseed
 - packer script 
 	- add ansible provisioning
+	- preseed file root password issue
 - provisioning script 
 	- split the script in multiple file
 	- configure two networks TOR NAT
