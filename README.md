@@ -14,9 +14,14 @@
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 ## Status
-- build created
-- packer script working
-- provisioning script working
+- ISO
+	- add perzonalized picture
+	- check automated-build-preseed
+- packer script 
+	- add ansible provisioning
+- provisioning script 
+	- split the script in multiple file
+	- configure two networks TOR NAT
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
