@@ -12,6 +12,11 @@
     - pull docker images
 - create a vagrant box
 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+## Status
+- build created
+- packer script working
+- provisioning script working
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
