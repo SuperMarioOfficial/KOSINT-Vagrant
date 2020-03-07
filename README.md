@@ -452,7 +452,7 @@ nmcli  connection  add con-name whonix ifname eth1 type Ethernet autoconnect no 
 
 echo "nameserver 10.152.152.10 nameserver 8.8.8.8 nameserver 8.8.4.4" >> /etc/resolv.conf
 
-echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
+#echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
 
 ### Provisioning with ansible playbook
