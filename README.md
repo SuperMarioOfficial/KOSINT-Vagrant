@@ -23,7 +23,7 @@
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 ## Machine details
-= Disk size: 80000 MB
+- Disk size: 80000 MB
 - RAM: 6000 MB
 - Graphic memory: 128M
 - CPU: 3
@@ -389,7 +389,8 @@ logz='cleanup.log'
 echo "##############################################################################"
 echo "# 01_Update System                                                           #" | tee -a $logz
 echo "##############################################################################"
-#apt-get -y -qq update | tee -a $logz
+apt-get -y -qq update | tee -a $logz
+apt-get install resolvconf
 #apt-get update --fix-missing | tee -a $logz
 #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
 #DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
@@ -450,9 +451,10 @@ export HISTSIZE=0 | tee -a $logz
 rm -f /root/.wget-hsts | tee -a $logz
 
 echo "##############################################################################"
-echo "# 04_Other                                                                  #"| tee -a $logz
+echo "# 04_Others                                                                  #"| tee -a $logz
 echo "##############################################################################"
 PATH=/usr/bin:/usr/sbin
+echo "root:vagrant" | sudo chpasswd
 ```
 #### networking.sh
 ```
@@ -583,10 +585,23 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 - [sudo issues](https://stackoverflow.com/questions/34706972/simple-shell-inline-provisionning)
 
 ### Do you know where to find other example of unattended installation?
-- [linux-unattended-installation](https://github.com/core-process/linux-unattended-installation)
+- [linux-unattended-installation, what I do? ](https://github.com/core-process/linux-unattended-installation)
+- [ubuntu-unattended, help me?](https://github.com/frankietyrine/ubuntu-unattended)
 - []()
 - []()
-- []()
+
+### Networking -> [debian-reference](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
+- [Networks are Unmanaged](https://wiki.debian.org/NetworkManager)
+- [network-manager-says-device-not-managed](https://askubuntu.com/questions/71159/network-manager-says-device-not-managed)
+- [How to configure Networking on ubuntu?](https://www.swiftstack.com/docs/install/configure_networking.html)
+### Linux
+- [How to Change Linux User’s Password in One Command Line](https://www.systutorials.com/changing-linux-users-password-in-one-command-line/)
+- [How to change user password in multiple servers](https://www.2daygeek.com/linux-passwd-chpasswd-command-set-update-change-users-password-in-linux-using-shell-script/)
+- [How To Set Permanent DNS Nameservers in Ubuntu and Debian](https://www.tecmint.com/set-permanent-dns-nameservers-in-ubuntu-debian/)
+- [How do I set my DNS when resolv.conf is being overwritten?](https://unix.stackexchange.com/questions/128220/how-do-i-set-my-dns-when-resolv-conf-is-being-overwritten)
+
+### Virtualbox
+- [VirtualBox - how to increase video memory?](https://askubuntu.com/questions/587083/virtualbox-how-to-increase-video-memory)
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
