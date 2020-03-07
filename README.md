@@ -15,14 +15,10 @@
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 ## Status
 - ISO
-	- add perzonalized picture
-	- check automated-build-preseed
+	- add perzonalized picture and color shceme
 - packer script 
 	- add ansible provisioning
 	- preseed file root password issue
-- provisioning script 
-	- split the script in multiple file
-	- configure two networks TOR NAT
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
@@ -43,8 +39,8 @@ cd live-build-config
 kali-linux-core
 
 # Kali applications
-kali-tools-information-gathering
-kali-tools-reporting
+#kali-tools-information-gathering
+#kali-tools-reporting
 
 # Graphical desktop
 kali-desktop-xfce
@@ -178,7 +174,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
     		{
       "type": "shell",
       "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -S -E sh -eux '{{ .Path }}'",
-      "scripts": [ "{{template_dir}}/scripts/cleanup.sh","{{template_dir}}/scripts/virtualbox.sh"],
+      "scripts": [ "{{template_dir}}/scripts/cleanup.sh","{{template_dir}}/scripts/networking.sh"],
       "expect_disconnect": true
       }]
 
@@ -209,14 +205,20 @@ d-i passwd/user-password-again password vagrant
 ```
 "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
 ```
-	
----
+
+- **When to upgrade, install pkges and configuring networks?** Packer has the issue that if the script fail, you have to start from the beginning. Therefore, I suggest that all the non necessary things are provisioned post factum. Provisioning, it can happen at different stages: building the iso, during packer building, after packer succesfully built the vm, and with vagrant. This include, updating, installing, upgrading, configuring networks. It is highly adviced to do it after the packer is done. 
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
 ## Preceed configuration file
-Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt) 
+Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt). 
+
+### When to use it: 
+I suggest you to use the bare minimum configuration and avoid to upgrade while installing the os. As explained before, packer will close and the vm will be destroyed if does not succeed 100%, if there is any connectivity issue during the installation, you could end up having to restart from the beginning. 
+
+### Pressed in the ISO
+Preseed is used to build the ISO too, and it is the same file. You can keep a bareminimum preseed configuration.
 
 ### References:
 - https://www.kali.org/dojo/preseed.cfg
@@ -278,7 +280,7 @@ d-i apt-setup/disable-cdrom-entries boolean true
 tasksel tasksel/first multiselect desktop-xfce, meta-default, standard
 
 # Change default hostname
-d-i netcfg/get_hostname string kali
+d-i netcfg/get_hostname string tracelab
 d-i netcfg/get_domain string unassigned-domain
 #d-i netcfg/choose_interface select auto
 d-i netcfg/choose_interface select eth0
@@ -337,6 +339,7 @@ Provisioning can be done in many stages and not only here, and in different ways
 ```
 
 ```
+ "provisioners": [
 {
   "type": "shell",
   "inline": [
@@ -344,7 +347,7 @@ Provisioning can be done in many stages and not only here, and in different ways
     "ssh-keyscan github.com >> ~/.ssh/known_hosts",
     "git clone git@github.com:exampleorg/myprivaterepo.git"
   ]
-}
+}]
 ```
 ### Scripts: 
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
@@ -358,13 +361,13 @@ logz='cleanup.log'
 echo "##############################################################################"
 echo "# 01_Update System                                                           #" | tee -a $logz
 echo "##############################################################################"
-apt-get -y -qq update | tee -a $logz
-apt-get update --fix-missing | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get autoremove -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get -y -qq dist-upgrade | tee -a $logz
-DEBIAN_FRONTEND=noninteractive apt-get -y -qq install linux-headers-"$(uname -r)" | tee -a $logz
+#apt-get -y -qq update | tee -a $logz
+#apt-get update --fix-missing | tee -a $logz
+#DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
+#DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
+#DEBIAN_FRONTEND=noninteractive apt-get autoremove -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
+#DEBIAN_FRONTEND=noninteractive apt-get -y -qq dist-upgrade | tee -a $logz
+#DEBIAN_FRONTEND=noninteractive apt-get -y -qq install linux-headers-"$(uname -r)" | tee -a $logz
 
 echo "##############################################################################"
 echo "# 02_Cleaning                                                                #" | tee -a $logz
@@ -400,37 +403,42 @@ find /var/log -type f -exec truncate --size=0 {} \;| tee -a $logz
 find /var/log/ -name "*.log" -exec rm -f {} \;  | tee -a $logz
 
 echo "-----Cleaning up dpkg backup files-----" | tee -a $logz
-find /var/cache/debconf -type f -print0 '*-old' | xargs rm -f | tee -a $logz
-
-echo "-----Whiteout root-----" | tee -a $logz
-count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}') | tee -a $logz
-count=$(($count-1)) | tee -a $logz
-dd if=/dev/zero of=/tmp/whitespace bs=1M count=$count | cat "dd exit code $? is suppressed" | tee -a $logz
-rm /tmp/whitespace | tee -a $logz
-
-echo "-----Whiteout /boot-----" | tee -a $logz
-count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')| tee -a $logz
-count=$(($count-1)) | tee -a $logz
-
-dd if=/dev/zero of=/boot/whitespace bs=1M count=$count | cat "dd exit code $? is suppressed" | tee -a $logz
-rm /boot/whitespace | tee -a $logz
+find /usr -name "*.pyc" -print0 | xargs -0r rm -rf
+find /var/cache/apt -type f -print0 | xargs -0r rm -rf
+find /var/cache/debconf -type f -print0 | xargs -0r rm -rf
+find /usr/share/man -type f -print0 | xargs -0r rm -rf
+find /usr/share/doc -type f -print0 | xargs -0r rm -rf
+find /usr/share/locale -type f -print0 | xargs -0r rm -rf
 
 echo "-----Blank netplan machine-id (DUID) so machines get unique ID generated on boot.-----" | tee -a $logz
 truncate -s 0 /etc/machine-id | tee -a $logz
 
 echo "-----Zero out the free space to save space in the final image-----" | tee -a $logz
-dd if=/dev/zero of=/EMPTY bs=1M || true | tee -a $logz
-rm -f /EMPTY | tee -a $logz
+#dd if=/dev/zero of=/EMPTY bs=1M || true | tee -a $logz
+#rm -f /EMPTY | tee -a $logz
 
 echo "-----clear the history so our install isn't there-----" | tee -a $logz
 export HISTSIZE=0 | tee -a $logz
 rm -f /root/.wget-hsts | tee -a $logz
 
 echo "##############################################################################"
-echo "# 04_Reboot                                                                  #"| tee -a $logz
+echo "# 04_Other                                                                  #"| tee -a $logz
 echo "##############################################################################"
-shutdown -r now | tee -a $logz
+PATH=/usr/bin:/usr/sbin
+```
+#### networking.sh
+```
+#!/bin/sh -eux
 
+echo "auto lo eth0 iface lo inet loopback iface eth0 inet dhcp" >> /etc/network/interfaces
+
+echo "auto eth1 iface eth1 inet static address 10.152.152.12 netmask 255.255.192.0 gateway 10.152.152.10" >> /etc/network/interfaces
+
+nmcli  connection  add con-name whonix ifname eth1 type Ethernet autoconnect no ipv4.addresses 10.152.152.11/18 ipv4.gateway 10.152.152.10 ipv4.method manual
+
+echo "nameserver 10.152.152.10 nameserver 8.8.8.8 nameserver 8.8.4.4" >> /etc/resolv.conf
+
+echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
 
 ### Provisioning with ansible playbook
