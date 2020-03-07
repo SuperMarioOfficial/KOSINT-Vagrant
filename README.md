@@ -22,6 +22,19 @@
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
+## Machine details
+= Disk size: 80000 MB
+- RAM: 6000 MB
+- Graphic memory: 128M
+- CPU: 3
+- Audio: disabled
+- Network cards: 2
+- 3D Accelerated: enabled
+- clipboard and drandrop modes: enabled
+- usb: enabled
+
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
 # Build the ISO
 ## steps:
@@ -143,6 +156,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
       "guest_additions_mode": "disable",
       "vboxmanage": [
         ["modifyvm","{{.Name}}","--memory","6000"],
+	["modifyvm","{{.Name}}","--vram","128"],
         ["modifyvm","{{.Name}}","--cpus","3"], 
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
@@ -367,7 +381,7 @@ Provisioning can be done in many stages and not only here, and in different ways
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
 - [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
 
-## script cleaup.sh 
+## script cleanup.sh 
 ``` bash
 #!/bin/sh -eux
 logz='cleanup.log'
