@@ -234,21 +234,35 @@ Preseed is used to build the ISO too, and it is the same file. You can keep a ba
 - [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
 - [kali-linux-light-unattended.preseed](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-light-unattended.preseed)
 - [kali-config/common/includes.installer/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/live-build-config/-/blob/master/kali-config/common/includes.installer/preseed.cfg)
+- [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
+- [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
 ### Preseed configuration file
 #### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
+### Unattended Installation
+d-i auto-install/enable boolean true
+d-i debconf/priority select critical
+
+### Localization
 d-i debian-installer/locale string en_US.UTF-8
+d-i localechooser/supported-locales multiselect en_US.UTF-8, de_DE.UTF-8
+d-i console-setup/ask_detect boolean false
+d-i keyboard-configuration/xkb-keymap select us
 d-i console-keymaps-at/keymap select us
+
+### Mirror settings
 d-i mirror/country string enter information manually
 d-i mirror/http/hostname string http.kali.org
 d-i mirror/http/directory string /kali
-d-i keyboard-configuration/xkb-keymap select us
 d-i mirror/http/proxy string
 d-i mirror/suite string kali-rolling
 d-i mirror/codename string kali-rolling
 
+### Clock and time zone setup
 d-i clock-setup/utc boolean true
-d-i time/zone string US/Eastern
+d-i time/zone string Etc/UTC
+d-i clock-setup/ntp boolean true
+d-i clock-setup/ntp-server string ntp.ubuntu.com
 
 # Disable security, volatile and backports
 d-i apt-setup/services-select multiselect
@@ -279,13 +293,12 @@ d-i apt-setup/disable-cdrom-entries boolean true
 # Install default packages
 tasksel tasksel/first multiselect desktop-xfce, meta-default, standard
 
-# Change default hostname
+# Network configuration
 d-i netcfg/get_hostname string tracelab
 d-i netcfg/get_domain string unassigned-domain
 #d-i netcfg/choose_interface select auto
-d-i netcfg/choose_interface select eth0
+d-i netcfg/choose_interface select auto
 d-i netcfg/dhcp_timeout string 60
-
 d-i hw-detect/load_firmware boolean false
 
 # vagrant user account
@@ -295,6 +308,7 @@ d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 
 # root
+d-i passwd/root-login boolean true
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 
@@ -553,6 +567,12 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 - [packer-cant-execute-shell-provisioner-as-sudo](https://stackoverflow.com/questions/48537171/packer-cant-execute-shell-provisioner-as-sudo)
 - [packer-build-fails-due-to-tty-needed-for-sudo](https://stackoverflow.com/questions/31788902/packer-build-fails-due-to-tty-needed-for-sudo)
 - [sudo issues](https://stackoverflow.com/questions/34706972/simple-shell-inline-provisionning)
+
+### Do you know where to find other example of unattended installation?
+- [linux-unattended-installation](https://github.com/core-process/linux-unattended-installation)
+- []()
+- []()
+- []()
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
