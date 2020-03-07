@@ -80,7 +80,6 @@ Packer/
       |       |--- preseed.cfg
       |---scripts/
               |--- cleanup.sh
-	      |--- virtualbox.sh
 	      |--- ansible.sh
 ```
 ### What is Packer?
@@ -120,9 +119,8 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 ### Packer configuration file k-osint.json
 ```
 {
-  {
   "variables": {
-    "vm_name": "k-osint",
+    "vm_name": "k-osint2",
     "disk_size": "80000",
     "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
     "iso_checksum_type": "sha1",
@@ -253,30 +251,18 @@ Preseed is used to build the ISO too, and it is the same file. You can keep a ba
 ### Preseed configuration file
 #### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
-### Unattended Installation
-d-i auto-install/enable boolean true
-d-i debconf/priority select critical
-
-### Localization
 d-i debian-installer/locale string en_US.UTF-8
-d-i localechooser/supported-locales multiselect en_US.UTF-8, de_DE.UTF-8
-d-i console-setup/ask_detect boolean false
-d-i keyboard-configuration/xkb-keymap select us
 d-i console-keymaps-at/keymap select us
-
-### Mirror settings
 d-i mirror/country string enter information manually
 d-i mirror/http/hostname string http.kali.org
 d-i mirror/http/directory string /kali
+d-i keyboard-configuration/xkb-keymap select us
 d-i mirror/http/proxy string
 d-i mirror/suite string kali-rolling
 d-i mirror/codename string kali-rolling
 
-### Clock and time zone setup
 d-i clock-setup/utc boolean true
-d-i time/zone string Etc/UTC
-d-i clock-setup/ntp boolean true
-d-i clock-setup/ntp-server string ntp.ubuntu.com
+d-i time/zone string US/Eastern
 
 # Disable security, volatile and backports
 d-i apt-setup/services-select multiselect
@@ -307,12 +293,14 @@ d-i apt-setup/disable-cdrom-entries boolean true
 # Install default packages
 tasksel tasksel/first multiselect desktop-xfce, meta-default, standard
 
-# Network configuration
+# Change default hostname
 d-i netcfg/get_hostname string tracelab
+d-i netcfg/get_hostname string kali
 d-i netcfg/get_domain string unassigned-domain
 #d-i netcfg/choose_interface select auto
-d-i netcfg/choose_interface select auto
+d-i netcfg/choose_interface select eth0
 d-i netcfg/dhcp_timeout string 60
+
 d-i hw-detect/load_firmware boolean false
 
 # vagrant user account
@@ -322,7 +310,6 @@ d-i passwd/user-password password vagrant
 d-i passwd/user-password-again password vagrant
 
 # root
-d-i passwd/root-login boolean true
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 
@@ -460,14 +447,18 @@ echo "root:vagrant" | sudo chpasswd
 ```
 #!/bin/sh -eux
 
-echo "auto lo eth0 iface lo inet loopback iface eth0 inet dhcp" >> /etc/network/interfaces
+echo "auto lo  iface lo inet loopback" >> /etc/network/interfaces
+
+echo "allow-hotplug eth0 iface eth0 inet dhcp" >> /etc/network/interfaces
 
 echo "auto eth1 iface eth1 inet static address 10.152.152.12 netmask 255.255.192.0 gateway 10.152.152.10" >> /etc/network/interfaces
 
 nmcli  connection  add con-name whonix ifname eth1 type Ethernet autoconnect no ipv4.addresses 10.152.152.11/18 ipv4.gateway 10.152.152.10 ipv4.method manual
 
+systemctl start resolvconf.service
+systemctl enable resolvconf.service
 echo "nameserver 10.152.152.10 nameserver 8.8.8.8 nameserver 8.8.4.4" >> /etc/resolv.conf
-
+resolvconf -u
 #echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
 
