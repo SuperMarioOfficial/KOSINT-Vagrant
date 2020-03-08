@@ -594,5 +594,8 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 
 ### Deployment
 - [how-to-deploy-firefox-with-bookmarks-and-addons](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
+- [customizing-firefox-distribution-ini](https://mike.kaply.com/2012/03/26/customizing-firefox-distribution-ini/)
+- [how-to-deploy-firefox-with-bookmarks-and-addons?](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
