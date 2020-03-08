@@ -726,11 +726,12 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 	- answer: https://www.virtualbox.org/manual/ch08.html#vboxmanage-sharedfolder
 	- https://github.com/hashicorp/packer/issues/723
 
-### throubleshooting Whonix
+### Throubleshooting Tor
 I cannot connect to TOR:
 ```
-- Change NAT -> Whonix
-- cat /etc/network/interfaces
+- Turn on Whonix
+- Change the netwrok card from NAT to Whonix
+- cat /etc/network/interfaces and check that everything is ok there
 - echo "nameserver 10.152.152.10" >> /etc/resolv.conf
 - add DNS to the "Secure" connection in networkManagement pannel
 - restart
