@@ -130,8 +130,8 @@ Packer/
     "box_name" : "k-osint", 
     "ssh_username": "tracelabs",
     "ssh_password": "tracelabs", 
-    
-    "box_desc" : "Official Kali Linux OS distro of Tracelab"
+    "version": "1.0"
+    "box_desc" : "Official TraceLabs OSINT distro"
 
   },
   "description": "{{user `box_desc`}}",
@@ -196,7 +196,9 @@ Packer/
     {
       	"type": "vagrant",
   	"output": "k-osint-{{.Provider}}.box",
-        "compression_level":9
+        "compression_level":9,
+	"keep_input_artifact": true,
+        "version":  "{{ user `version` }}"
     }
   ]
 
@@ -544,11 +546,14 @@ hosts: localhost
     stat: path=/var/run/reboot-required
     register: file_reboot_required
 ```
-
+### References:
+- [provision-multiple-machines-in-parallel-with-vagrant-and-ansible](https://martincarstenbach.wordpress.com/2019/04/11/ansible-tipsntricks-provision-multiple-machines-in-parallel-with-vagrant-and-ansible/)
+- [provisioning-a-virtual-machine-with-ansible](https://spaceweb.nl/provisioning-a-virtual-machine-with-ansible/)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
 ## Vagrant
+[Vagrant cloud](https://app.vagrantup.com/boxes/search)
 ### How to create a box
 - The first thing to do to create a box with packer is to add these lines to packer json file. 
 ```
@@ -556,7 +561,9 @@ hosts: localhost
     {
       	"type": "vagrant",
   	"output": "k-osint-{{.Provider}}.box",
-        "compression_level":9
+        "compression_level":9,
+	"keep_input_artifact": true,
+        "version":  "{{ user `version` }}"
     }
   ]
 ```
@@ -572,6 +579,13 @@ config.ssh.username = "tracelabs"
  ### References:
 - [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 - [vagrantfile/ssh_settings](https://www.vagrantup.com/docs/vagrantfile/ssh_settings.html)
+- [vagrant-provisioning-with-ansible](https://medium.com/@Joachim8675309/vagrant-provisioning-with-ansible-6dba6bca6290)
+- [ansible/inventory/virtualbox](https://docs.ansible.com/ansible/latest/plugins/inventory/virtualbox.html)
+- [ansible-dims-playbooks](https://ansible-dims-playbooks.readthedocs.io/en/latest/creatingvms.html)
+- [Ansible Playbooks for Beginners - Hands-On](https://www.youtube.com/watch?v=Z01b9QZG0D0)
+- [How To Ssh Into Linux Virtualbox](https://www.youtube.com/watch?v=ErzhbUusgdI)
+- [https://www.virtualbox.org/manual](https://www.virtualbox.org/manual/ch08.html)
+- [building-vagrant-machines-with-packer](https://www.gun.io/blog/building-vagrant-machines-with-packer)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
@@ -608,8 +622,6 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ### Do you know where to find other example of unattended installation?
 - [linux-unattended-installation, what I do? ](https://github.com/core-process/linux-unattended-installation)
 - [ubuntu-unattended, help me?](https://github.com/frankietyrine/ubuntu-unattended)
-- []()
-- []()
 
 ### Networking -> [debian-reference](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
 - [Networks are Unmanaged](https://wiki.debian.org/NetworkManager)
@@ -628,6 +640,8 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 - [how-to-deploy-firefox-with-bookmarks-and-addons](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
 - [customizing-firefox-distribution-ini](https://mike.kaply.com/2012/03/26/customizing-firefox-distribution-ini/)
 - [how-to-deploy-firefox-with-bookmarks-and-addons?](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
+- [Provisioning VirtualBox VM using Vagrant and Ansible](https://www.youtube.com/watch?v=U_q-j9wsbjo)
+- [Learn to use Ansible to Setup & Provision Vagrant Boxes](https://www.youtube.com/watch?v=F-pLhf-Xkpk)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
