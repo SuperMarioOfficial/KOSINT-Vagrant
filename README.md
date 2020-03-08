@@ -568,6 +568,21 @@ hosts: localhost
 config.ssh.password = "tracelabs"
 config.ssh.username = "tracelabs"
  ```
+ 
+###  Vagrant Post-Processor 
+Vagrant post-processor can create boxes for the following providers.
+```
+    AWS
+    Azure
+    DigitalOcean
+    Docker
+    Hyper-V
+    LXC
+    Parallels
+    QEMU
+    VirtualBox
+    VMware
+```
 ### vagrant file
 ```
 # -*- mode: ruby -*-
@@ -706,6 +721,9 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 
 ### Virtualbox
 - [VirtualBox - how to increase video memory?](https://askubuntu.com/questions/587083/virtualbox-how-to-increase-video-memory)
+- [Can VBoxManage add/remove shared folders?](https://forums.virtualbox.org/viewtopic.php?f=8&t=75474&p=351510#p351510)
+	- answer: https://www.virtualbox.org/manual/ch08.html#vboxmanage-sharedfolder
+	- https://github.com/hashicorp/packer/issues/723
 
 ### Deployment
 - [how-to-deploy-firefox-with-bookmarks-and-addons](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
