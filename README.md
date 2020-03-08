@@ -1,7 +1,7 @@
 # The K-OSINT.iso automation project steps:
 
 - 1 Clone this repository ```git clone https://github.com/frankietyrine/K-OSINT.iso.git```
-- 2 Adjust the settings in the file [k-osint.json]()
+- 2 Adjust the settings in the file [k-osint.json](https://github.com/frankietyrine/K-OSINT.iso/blob/master/README.md#packer-configuration-file-k-osintjson)
 - 3 Open a terminal and type ```packer build --force k-osint.json```
 - 4 When it has finished type ```vagrant init```
 - 5 and then ``` vagrant up```
