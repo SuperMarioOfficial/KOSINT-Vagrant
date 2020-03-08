@@ -1,5 +1,5 @@
 # The K-OSINT.iso automation project 
-#### Virtualbox + Kali Linux personalized ISO + Packer + Ansible + Vagrant + Docker
+### Virtualbox + Kali Linux personalized ISO + Packer + Ansible + Vagrant + Docker
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/idea.PNG)
 ![](https://blog.secureideas.com/wp-content/uploads/2018/09/packer_vagrant_eco.png)
 - build the iso
@@ -13,7 +13,7 @@
 - create a vagrant box
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-## Status
+### Status
 - ISO
 	- add perzonalized picture and color shceme
 - packer script 
@@ -22,7 +22,7 @@
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
-## Machine details
+### Machine details
 - Disk size: 80000 MB
 - RAM: 6000 MB
 - Graphic memory: 128M
@@ -36,8 +36,8 @@
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-# Build the ISO
-## steps:
+## Build the ISO
+### steps:
 #### 1 Clone the live-build
 ``` bash
 sudo apt update
@@ -71,7 +71,11 @@ label install
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-# Automate the creation of a Vbox machine with Packer configuration files
+## Pakcer
+### What is Packer?
+The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably. [To know more visit learn.hashicorp.com](https://learn.hashicorp.com/packer#operations-and-development)
+
+### Structure folder
 ```
 Packer/
       |---k-osint.json
@@ -82,8 +86,6 @@ Packer/
               |--- cleanup.sh
 	      |--- ansible.sh
 ```
-## Packer
-The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably. [To know more visit learn.hashicorp.com](https://learn.hashicorp.com/packer#operations-and-development)
 
 ### Pakcer configuration examples
 - [bento/example1.json](https://github.com/chef/bento/blob/master/packer_templates/debian/debian-10.2-amd64.json)
