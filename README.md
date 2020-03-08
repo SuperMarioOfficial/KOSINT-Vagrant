@@ -231,7 +231,7 @@ d-i passwd/user-password-again password vagrant
 
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-### Preceed configuration file
+### Preceed file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt). 
 
 ### When to use it: 
@@ -240,8 +240,15 @@ I suggest you to use the bare minimum configuration and avoid to upgrade while i
 ### Pressed in the ISO
 Preseed is used to build the ISO too, and it is the same file. You can keep a bareminimum preseed configuration.
 
-### Preseed configuration file
-#### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
+### Examples:
+- [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
+- [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
+- [kali-linux-light-unattended.preseed](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-light-unattended.preseed)
+- [kali-config/common/includes.installer/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/live-build-config/-/blob/master/kali-config/common/includes.installer/preseed.cfg)
+- [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
+- [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
+
+#### [k-osint-preseed](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
 d-i console-keymaps-at/keymap select us
@@ -320,6 +327,7 @@ d-i preseed/late_command string in-target systemctl enable ssh
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 ```
+
 ### References:
 - https://www.kali.org/dojo/preseed.cfg
 - https://kali.training/topic/unattended-installations/
@@ -329,15 +337,7 @@ d-i passwd/root-password-again password vagrant
 - [video kali-packer](https://www.youtube.com/watch?v=uDLC2JMCLek)
 - [automating-red-team-homelabs-part-1-kali-automation](https://blog.secureideas.com/2018/09/automating-red-team-homelabs-part-1-kali-automation.html)
 - [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html) 
-### Examples:
-- [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
-- [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
-- [kali-linux-light-unattended.preseed](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-light-unattended.preseed)
-- [kali-config/common/includes.installer/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/live-build-config/-/blob/master/kali-config/common/includes.installer/preseed.cfg)
-- [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
-- [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
 
 ## Provisioning
 Provisioning can be done in many stages and not only here, and in different ways. [Provisioners](https://packer.io/docs/provisioners/shell.html) use builtin and third-party software to install and configure the machine image after booting. Provisioners prepare the system for use, so common use cases for provisioners include:
