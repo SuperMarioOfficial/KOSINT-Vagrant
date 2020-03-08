@@ -441,7 +441,7 @@ echo "##########################################################################
 echo "# 04_Others                                                                  #"| tee -a $logz
 echo "##############################################################################"
 PATH=/usr/bin:/usr/sbin
-echo "root:vagrant" | sudo chpasswd
+echo "root:tracelabs" | sudo chpasswd
 ```
 #### networking.sh
 ```
@@ -592,5 +592,7 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ### Virtualbox
 - [VirtualBox - how to increase video memory?](https://askubuntu.com/questions/587083/virtualbox-how-to-increase-video-memory)
 
+### Deployment
+- [how-to-deploy-firefox-with-bookmarks-and-addons](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
