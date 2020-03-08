@@ -662,6 +662,7 @@ config.ssh.username = "tracelabs"
 end
 
 ```
+
 ### References:
 - [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 - [vagrantfile/ssh_settings](https://www.vagrantup.com/docs/vagrantfile/ssh_settings.html)
@@ -725,6 +726,15 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 	- answer: https://www.virtualbox.org/manual/ch08.html#vboxmanage-sharedfolder
 	- https://github.com/hashicorp/packer/issues/723
 
+### throubleshooting Whonix
+I cannot connect to TOR:
+```
+- Change NAT -> Whonix
+- cat /etc/network/interfaces
+- echo "nameserver 10.152.152.10" >> /etc/resolv.conf
+- add DNS to the "Secure" connection in networkManagement pannel
+- restart
+```
 ### Deployment
 - [how-to-deploy-firefox-with-bookmarks-and-addons](https://brashear.me/blog/2017/12/07/how-to-deploy-firefox-with-bookmarks-and-addons/)
 - [customizing-firefox-distribution-ini](https://mike.kaply.com/2012/03/26/customizing-firefox-distribution-ini/)
