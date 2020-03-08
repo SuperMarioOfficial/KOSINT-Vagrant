@@ -82,7 +82,7 @@ Packer/
               |--- cleanup.sh
 	      |--- ansible.sh
 ```
-### What is Packer?
+## Packer
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably. [To know more visit learn.hashicorp.com](https://learn.hashicorp.com/packer#operations-and-development)
 
 ### Pakcer configuration examples
@@ -231,7 +231,7 @@ d-i passwd/user-password-again password vagrant
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-## Preceed configuration file
+### Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt). 
 
 ### When to use it: 
@@ -340,13 +340,13 @@ d-i passwd/root-password-again password vagrant
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-## Provisioners Scripts
+## Provisioning
 Provisioning can be done in many stages and not only here, and in different ways. [Provisioners](https://packer.io/docs/provisioners/shell.html) use builtin and third-party software to install and configure the machine image after booting. Provisioners prepare the system for use, so common use cases for provisioners include:
 - installing packages
 - patching the kernel
 - creating users
 - downloading application code
-#### It can happen in different ways such as
+### It can happen in different ways such as
 - inline
 - shell
 - ansible
@@ -376,7 +376,7 @@ Provisioning can be done in many stages and not only here, and in different ways
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
 - [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
 
-## script cleanup.sh 
+### script cleanup.sh 
 ``` bash
 #!/bin/sh -eux
 logz='cleanup.log'
@@ -452,7 +452,7 @@ echo "##########################################################################
 PATH=/usr/bin:/usr/sbin
 echo "root:tracelabs" | sudo chpasswd
 ```
-#### networking.sh
+### networking.sh
 ```
 #!/bin/sh -eux
 
@@ -468,9 +468,10 @@ echo "nameserver 10.152.152.10" >> /etc/resolv.conf
 resolvconf -u
 #echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
-### Provisioning with ansible playbook
-#### How to create a playbook
+## Provisioning with ansible playbook
+### How to create a playbook
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
 - [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
 ```
@@ -545,7 +546,7 @@ hosts: localhost
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-# Create Vagrant box
+## Vagrant
 ### How to create a box
 - The first thing to do to create a box with packer is to add these lines to packer json file. 
 ```
@@ -572,7 +573,7 @@ config.ssh.username = "tracelabs"
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-# Docker
+## Docker
 ```
 FROM Xubuntu 18.04.4 LTS
 RUN apt-get update && \
@@ -596,7 +597,7 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
-# FAQ
+## FAQ
 ### Sudo Issues
 - [packer-cant-execute-shell-provisioner-as-sudo](https://stackoverflow.com/questions/48537171/packer-cant-execute-shell-provisioner-as-sudo)
 - [packer-build-fails-due-to-tty-needed-for-sudo](https://stackoverflow.com/questions/31788902/packer-build-fails-due-to-tty-needed-for-sudo)
