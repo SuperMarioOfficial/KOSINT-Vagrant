@@ -120,7 +120,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 ```
 {
   "variables": {
-    "vm_name": "k-osint2",
+    "vm_name": "k-osint",
     "disk_size": "80000",
     "iso_checksum": "93ea9f00a60551412f20186cb7ba7d1ff3bebf73",
     "iso_checksum_type": "sha1",
@@ -159,7 +159,7 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
 	["modifyvm","{{.Name}}", "--nic2", "intnet"],
-	["modifyvm","{{.Name}}", "--intnet2", "Whonix"],
+	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
 	["modifyvm", "{{.Name}}", "--accelerate3d", "off"],
         ["modifyvm", "{{.Name}}", "--usb", "on"],
         ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"],
@@ -188,7 +188,15 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
       "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -S -E sh -eux '{{ .Path }}'",
       "scripts": [ "{{template_dir}}/scripts/cleanup.sh","{{template_dir}}/scripts/networking.sh"],
       "expect_disconnect": true
-      }]
+      }],
+
+   "post-processors": [
+    {
+      	"type": "vagrant",
+  	"output": "k-osint-{{.Provider}}.box",
+        "compression_level":9
+    }
+  ]
 
 }
 ```
@@ -378,6 +386,7 @@ echo "# 01_Update System                                                        
 echo "##############################################################################"
 apt-get -y -qq update | tee -a $logz
 apt-get install resolvconf
+apt-get install net-tools
 #apt-get update --fix-missing | tee -a $logz
 #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
 #DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -o Dpkg::Options::='--force-confnew' | tee -a $logz
@@ -455,7 +464,7 @@ nmcli  connection  add con-name Secured type Ethernet autoconnect no ipv4.addres
 
 systemctl start resolvconf.service
 systemctl enable resolvconf.service
-echo "nameserver 10.152.152.10 >> /etc/resolv.conf
+echo "nameserver 10.152.152.10" >> /etc/resolv.conf
 resolvconf -u
 #echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
@@ -537,9 +546,29 @@ hosts: localhost
 
 
 # Create Vagrant box
-- [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
 ### How to create a box
-
+- The first thing to do to create a box with packer is to add these lines to packer json file. 
+```
+ "post-processors": [
+    {
+      	"type": "vagrant",
+  	"output": "k-osint-{{.Provider}}.box",
+        "compression_level":9
+    }
+  ]
+```
+ - Second, you need to use the command ```vagrant box add k-osint-virtualbox.box --name k-osint```
+ - Third, ```vagrant init k-osint```
+ - Fourth, ```vagrant up```
+ 
+ Pretty easy, but it is important to add to the .vagrantfile the following line:
+ ```
+config.ssh.password = "tracelabs"
+config.ssh.username = "tracelabs"
+ ```
+ ### References:
+- [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
+- [vagrantfile/ssh_settings](https://www.vagrantup.com/docs/vagrantfile/ssh_settings.html)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
