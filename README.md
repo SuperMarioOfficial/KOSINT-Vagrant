@@ -126,8 +126,8 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
     "iso_checksum_type": "sha1",
     "iso_url": "k-osint.iso",
     "box_name" : "k-osint", 
-    "ssh_username": "vagrant",
-    "ssh_password": "vagrant", 
+    "ssh_username": "tracelabs",
+    "ssh_password": "tracelabs", 
     
     "box_desc" : "Official Kali Linux OS distro of Tracelab"
 
@@ -147,8 +147,8 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
       "http_directory": "http",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S /sbin/shutdown -hP now",
       "communicator": "ssh",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant", 
+      "ssh_username": "tracelabs",
+      "ssh_password": "tracelabs", 
       "ssh_port": 22,
       "ssh_wait_timeout": "60m",
       "guest_additions_mode": "disable",
@@ -159,8 +159,8 @@ The VirtualBox Packer builder is able to create VirtualBox virtual machines and 
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
 	["modifyvm","{{.Name}}", "--nic2", "intnet"],
-	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
-	["modifyvm", "{{.Name}}", "--accelerate3d", "on"],
+	["modifyvm","{{.Name}}", "--intnet2", "Whonix"],
+	["modifyvm", "{{.Name}}", "--accelerate3d", "off"],
         ["modifyvm", "{{.Name}}", "--usb", "on"],
         ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"],
 	["modifyvm", "{{.Name}}", "--clipboard-mode", "bidirectional"],
@@ -304,14 +304,14 @@ d-i netcfg/dhcp_timeout string 60
 d-i hw-detect/load_firmware boolean false
 
 # vagrant user account
-d-i passwd/user-fullname string vagrant
-d-i passwd/username string vagrant
-d-i passwd/user-password password vagrant
-d-i passwd/user-password-again password vagrant
+d-i passwd/user-fullname string tracelabs
+d-i passwd/username string tracelabs
+d-i passwd/user-password password tracelabs
+d-i passwd/user-password-again password tracelabs
 
 # root
-d-i passwd/root-password password vagrant
-d-i passwd/root-password-again password vagrant
+d-i passwd/root-password password tracelabs
+d-i passwd/root-password-again password tracelabs
 
 d-i apt-setup/use_mirror boolean true
 d-i grub-installer/only_debian boolean true
@@ -447,17 +447,15 @@ echo "root:vagrant" | sudo chpasswd
 ```
 #!/bin/sh -eux
 
-echo "auto lo  iface lo inet loopback" >> /etc/network/interfaces
-
 echo "allow-hotplug eth0 iface eth0 inet dhcp" >> /etc/network/interfaces
 
-echo "auto eth1 iface eth1 inet static address 10.152.152.12 netmask 255.255.192.0 gateway 10.152.152.10" >> /etc/network/interfaces
+echo "auto eth1 iface eth1 inet static address 10.152.152.100 netmask 255.255.192.0 gateway 10.152.152.10" >> /etc/network/interfaces
 
-nmcli  connection  add con-name whonix ifname eth1 type Ethernet autoconnect no ipv4.addresses 10.152.152.11/18 ipv4.gateway 10.152.152.10 ipv4.method manual
+nmcli  connection  add con-name Secured type Ethernet autoconnect no ipv4.addresses 10.152.152.11/18 ipv4.gateway 10.152.152.10 ipv4.method manual
 
 systemctl start resolvconf.service
 systemctl enable resolvconf.service
-echo "nameserver 10.152.152.10 nameserver 8.8.8.8 nameserver 8.8.4.4" >> /etc/resolv.conf
+echo "nameserver 10.152.152.10 >> /etc/resolv.conf
 resolvconf -u
 #echo "[ifupdown] managed=true" >> /etc/NetworkManager/NetworkManager.conf
 ```
