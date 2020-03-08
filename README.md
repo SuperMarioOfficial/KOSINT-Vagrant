@@ -228,10 +228,8 @@ d-i passwd/user-password-again password vagrant
 - [search?q=%22Delete+X11+libraries%22&type=Code](https://github.com/search?q=%22Delete+X11+libraries%22&type=Code)
 - ["dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge"](https://github.com/search?l=Shell&q=%22dpkg+--list+%7C+awk+%27%7B+print+%242+%7D%27+%7C+grep+linux-source+%7C+xargs+apt-get+-y+purge%22&type=Code)
 
-
-
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-### Preceed file
+## Preceed file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt). 
 
 ### When to use it: 
@@ -248,7 +246,7 @@ Preseed is used to build the ISO too, and it is the same file. You can keep a ba
 - [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
 - [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
 
-#### [k-osint-preseed](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
+### [k-osint-preseed](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
 d-i debian-installer/locale string en_US.UTF-8
 d-i console-keymaps-at/keymap select us
@@ -371,7 +369,7 @@ Provisioning can be done in many stages and not only here, and in different ways
   ]
 }]
 ```
-### Scripts: 
+### Examples: 
 - [bonzofenix/scripts](https://github.com/bonzofenix/trainings/tree/master/bosh-lite/scripts)
 - [xuxiaodong/scripts](https://github.com/xuxiaodong/kvm-example/tree/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/scripts)
 
@@ -571,7 +569,7 @@ hosts: localhost
 config.ssh.password = "tracelabs"
 config.ssh.username = "tracelabs"
  ```
-### vagrant file commented
+### vagrant file
 ```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
