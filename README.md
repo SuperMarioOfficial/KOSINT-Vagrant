@@ -21,29 +21,6 @@
 - create a vagrant box
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-### Status
-- ISO
-	- add perzonalized picture and color shceme
-- packer script 
-	- add ansible provisioning
-	- preseed file root password issue
-
-![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
-### Machine details
-- Disk size: 80000 MB
-- RAM: 6000 MB
-- Graphic memory: 128M
-- CPU: 3
-- Audio: disabled
-- Network cards: 2
-- 3D Accelerated: enabled
-- clipboard and drandrop modes: enabled
-- usb: enabled
-
-![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
-
 ## Build the ISO
 ### steps:
 #### 1 Clone the live-build
@@ -79,7 +56,7 @@ label install
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
-## Pakcer
+## Packer
 ### What is Packer?
 The VirtualBox Packer builder is able to create VirtualBox virtual machines and export them in the OVF format, starting from an ISO image. The builder builds a virtual machine by creating a new virtual machine from scratch, booting it, installing an OS, provisioning software within the OS, then shutting it down. The result of the VirtualBox builder is a directory containing all the files necessary to run the virtual machine portably. [To know more visit learn.hashicorp.com](https://learn.hashicorp.com/packer#operations-and-development)
 
@@ -105,27 +82,18 @@ Packer/
 - [capistrano/example7.json](https://github.com/capistrano/packer/blob/master/capistrano-Debian_7.4_64.json)
 - [stefco/geco_vm.json](https://github.com/stefco/geco_vm/tree/51b80576ed37fd8a53cac6e05db232c1bf1e6f70)
 - [xuxiaodong/.json](https://github.com/xuxiaodong/kvm-example/blob/df0bbad6b0071bdd29d83ad4a5ee965fcd71e819/archlinux-2020.02.01-amd64.json)
-
-### References:
-- [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
-- [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
-- [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
-- [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
-- [eanderalx.org/network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
-- [frankietyrine/packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
-- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
-- [bento/packer_templates](https://github.com/chef/bento/tree/master/packer_templates)
-- [Automated Install Kali Linux (Packer) youtube](https://www.youtube.com/watch?v=uDLC2JMCLek)
-- [packer.io/docs/templates/provisioners](https://packer.io/docs/templates/provisioners.html)
-- - [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
-- [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
-- [run provisioner on specidfic build ](https://packer.io/docs/templates/provisioners.html)
-- [how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes](https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes/)
-- [provisioning-development-environment](https://www.endpoint.com/blog/2014/03/14/provisioning-development-environment_14)
-
-- [search?q=%22Delete+X11+libraries%22&type=Code](https://github.com/search?q=%22Delete+X11+libraries%22&type=Code)
-- ["dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge"](https://github.com/search?l=Shell&q=%22dpkg+--list+%7C+awk+%27%7B+print+%242+%7D%27+%7C+grep+linux-source+%7C+xargs+apt-get+-y+purge%22&type=Code)
  
+### Machine specifications
+- Disk size: 80000 MB
+- RAM: 6000 MB
+- Graphic memory: 128M
+- CPU: 3
+- Audio: disabled
+- Network cards: 2
+- 3D Accelerated: enabled
+- clipboard and drandrop modes: enabled
+- usb: enabled
+
 ### Packer configuration file k-osint.json
 ```
 {
@@ -240,9 +208,29 @@ d-i passwd/user-password-again password vagrant
 
 - **When to upgrade, install pkges and configuring networks?** Packer has the issue that if the script fail, you have to start from the beginning. Therefore, I suggest that all the non necessary things are provisioned post factum. Provisioning, it can happen at different stages: building the iso, during packer building, after packer succesfully built the vm, and with vagrant. This include, updating, installing, upgrading, configuring networks. It is highly adviced to do it after the packer is done. 
 
+### References:
+- [how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter](https://www.vlent.nl/weblog/2017/09/29/how-to-create-a-debian-virtualbox-machine-with-packer-with-an-additional-host-only-adapter/)
+- [Kali-Packer repository](https://github.com/vortexau/Kali-Packer)
+- [virtual-image-automation](https://blog.zaleos.net/virtual-image-automation/)
+- [create-simple-centos-7-virtualbox-with-packer](https://softwaretester.info/create-simple-centos-7-virtualbox-with-packer/)
+- [eanderalx.org/network_card_vbox](https://www.eanderalx.org/virtualization/8_network_card_vbox)
+- [frankietyrine/packer-kali_linux](https://github.com/frankietyrine/packer-kali_linux)
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html)
+- [bento/packer_templates](https://github.com/chef/bento/tree/master/packer_templates)
+- [Automated Install Kali Linux (Packer) youtube](https://www.youtube.com/watch?v=uDLC2JMCLek)
+- [packer.io/docs/templates/provisioners](https://packer.io/docs/templates/provisioners.html)
+- - [gwagner/packer-centos/virtualbox-guest-additions.sh](https://github.com/gwagner/packer-centos/blob/master/provisioners/install-virtualbox-guest-additions.sh)
+- [riywo/packer-example/virtualbox.sh](https://github.com/riywo/packer-example/blob/master/scripts/virtualbox.sh)
+- [run provisioner on specidfic build ](https://packer.io/docs/templates/provisioners.html)
+- [how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes](https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-packer-to-create-ubuntu-18-04-vagrant-boxes/)
+- [provisioning-development-environment](https://www.endpoint.com/blog/2014/03/14/provisioning-development-environment_14)
+
+- [search?q=%22Delete+X11+libraries%22&type=Code](https://github.com/search?q=%22Delete+X11+libraries%22&type=Code)
+- ["dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge"](https://github.com/search?l=Shell&q=%22dpkg+--list+%7C+awk+%27%7B+print+%242+%7D%27+%7C+grep+linux-source+%7C+xargs+apt-get+-y+purge%22&type=Code)
+
+
+
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-
-
 ### Preceed configuration file
 Preseeding provides a way to set answers to questions asked during the installation process, without having to manually enter the answers while the installation is running. This makes it possible to fully automate most types of installation and even offers some features not available during normal installations. If you are installing the operating system from a mounted iso as part of your Packer build, you will need to use a preseed file. [Example](https://www.debian.org/releases/stable/example-preseed.txt). 
 
@@ -252,22 +240,6 @@ I suggest you to use the bare minimum configuration and avoid to upgrade while i
 ### Pressed in the ISO
 Preseed is used to build the ISO too, and it is the same file. You can keep a bareminimum preseed configuration.
 
-### References:
-- https://www.kali.org/dojo/preseed.cfg
-- https://kali.training/topic/unattended-installations/
-- [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
-- [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
-- [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
-- [video kali-packer](https://www.youtube.com/watch?v=uDLC2JMCLek)
-- [automating-red-team-homelabs-part-1-kali-automation](https://blog.secureideas.com/2018/09/automating-red-team-homelabs-part-1-kali-automation.html)
-- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html) 
-### Examples:
-- [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
-- [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
-- [kali-linux-light-unattended.preseed](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-light-unattended.preseed)
-- [kali-config/common/includes.installer/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/live-build-config/-/blob/master/kali-config/common/includes.installer/preseed.cfg)
-- [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
-- [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
 ### Preseed configuration file
 #### [source](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
 ```
@@ -348,7 +320,22 @@ d-i preseed/late_command string in-target systemctl enable ssh
 d-i passwd/root-password password vagrant
 d-i passwd/root-password-again password vagrant
 ```
-
+### References:
+- https://www.kali.org/dojo/preseed.cfg
+- https://kali.training/topic/unattended-installations/
+- [Full tutorial](https://www.debian.org/releases/stable/amd64/apb.en.html)
+- [Automated Debian Install with Preseeding](https://www.youtube.com/watch?v=ndHi1sQWuH4)
+- [preseed-kali-linux-from-a-mini-iso](https://medium.com/@honze_net/preseed-kali-linux-from-a-mini-iso-9ad622617241)
+- [video kali-packer](https://www.youtube.com/watch?v=uDLC2JMCLek)
+- [automating-red-team-homelabs-part-1-kali-automation](https://blog.secureideas.com/2018/09/automating-red-team-homelabs-part-1-kali-automation.html)
+- [automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat](https://blog.secureideas.com/2019/05/automating-red-team-homelabs-part-2-build-pentest-destroy-and-repeat.html) 
+### Examples:
+- [/kalilinux/build-scripts/kali-vagrant/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/kali-vagrant/-/blob/master/http/preseed.cfg)
+- [kalilinux/recipes/kali-preseed-examples/preseed.cfg](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-rolling-preseed.cfg)
+- [kali-linux-light-unattended.preseed](https://gitlab.com/kalilinux/recipes/kali-preseed-examples/-/blob/master/kali-linux-light-unattended.preseed)
+- [kali-config/common/includes.installer/preseed.cfg](https://gitlab.com/kalilinux/build-scripts/live-build-config/-/blob/master/kali-config/common/includes.installer/preseed.cfg)
+- [netson](https://github.com/netson/ubuntu-unattended/blob/master/netson.seed)
+- [ubuntu/18.04/custom/preseed.cfg](https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 
@@ -584,18 +571,6 @@ hosts: localhost
 config.ssh.password = "tracelabs"
 config.ssh.username = "tracelabs"
  ```
- ### References:
-- [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
-- [vagrantfile/ssh_settings](https://www.vagrantup.com/docs/vagrantfile/ssh_settings.html)
-- [vagrant-provisioning-with-ansible](https://medium.com/@Joachim8675309/vagrant-provisioning-with-ansible-6dba6bca6290)
-- [ansible/inventory/virtualbox](https://docs.ansible.com/ansible/latest/plugins/inventory/virtualbox.html)
-- [ansible-dims-playbooks](https://ansible-dims-playbooks.readthedocs.io/en/latest/creatingvms.html)
-- [Ansible Playbooks for Beginners - Hands-On](https://www.youtube.com/watch?v=Z01b9QZG0D0)
-- [How To Ssh Into Linux Virtualbox](https://www.youtube.com/watch?v=ErzhbUusgdI)
-- [https://www.virtualbox.org/manual](https://www.virtualbox.org/manual/ch08.html)
-- [building-vagrant-machines-with-packer](https://www.gun.io/blog/building-vagrant-machines-with-packer)
-
-
 ### vagrant file commented
 ```
 # -*- mode: ruby -*-
@@ -675,8 +650,18 @@ config.ssh.username = "tracelabs"
 end
 
 ```
-![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+### References:
+- [vagrant-whonix-kali](https://github.com/j7k6/vagrant-whonix-kali/blob/master/Vagrantfile)
+- [vagrantfile/ssh_settings](https://www.vagrantup.com/docs/vagrantfile/ssh_settings.html)
+- [vagrant-provisioning-with-ansible](https://medium.com/@Joachim8675309/vagrant-provisioning-with-ansible-6dba6bca6290)
+- [ansible/inventory/virtualbox](https://docs.ansible.com/ansible/latest/plugins/inventory/virtualbox.html)
+- [ansible-dims-playbooks](https://ansible-dims-playbooks.readthedocs.io/en/latest/creatingvms.html)
+- [Ansible Playbooks for Beginners - Hands-On](https://www.youtube.com/watch?v=Z01b9QZG0D0)
+- [How To Ssh Into Linux Virtualbox](https://www.youtube.com/watch?v=ErzhbUusgdI)
+- [https://www.virtualbox.org/manual](https://www.virtualbox.org/manual/ch08.html)
+- [building-vagrant-machines-with-packer](https://www.gun.io/blog/building-vagrant-machines-with-packer)
 
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 ## Docker
 ```
