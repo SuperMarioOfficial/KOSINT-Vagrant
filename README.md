@@ -106,8 +106,7 @@ Packer/
     "box_name" : "k-osint", 
     "ssh_username": "tracelabs",
     "ssh_password": "tracelabs", 
-    "version": "1.0"
-    "box_desc" : "Official TraceLabs OSINT distro"
+    "box_desc" : "Official Kali Linux OS distro of Tracelab"
 
   },
   "description": "{{user `box_desc`}}",
@@ -137,13 +136,13 @@ Packer/
 	["modifyvm","{{.Name}}","--audio","none"], 
 	["modifyvm","{{.Name}}", "--nic1", "nat"],
 	["modifyvm","{{.Name}}", "--nic2", "intnet"],
-	["modifyvm","{{.Name}}", "--intnet2", "whonix"],
+	["modifyvm","{{.Name}}", "--intnet2", "Whonix"],
 	["modifyvm", "{{.Name}}", "--accelerate3d", "off"],
         ["modifyvm", "{{.Name}}", "--usb", "on"],
-        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxsvga"],
+        ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"],
 	["modifyvm", "{{.Name}}", "--clipboard-mode", "bidirectional"],
-        ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"]
-
+        ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"],
+	["sharedfolder","add", "{{.Name}}", "--name", "Tube", "--hostpath", "C:\\", "--automount"]
 	],
 
 	"boot_wait": "5s",
@@ -170,11 +169,11 @@ Packer/
 
    "post-processors": [
     {
+	
       	"type": "vagrant",
   	"output": "k-osint-{{.Provider}}.box",
         "compression_level":9,
-	"keep_input_artifact": true,
-        "version":  "{{ user `version` }}"
+	"keep_input_artifact": true
     }
   ]
 
