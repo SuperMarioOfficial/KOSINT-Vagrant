@@ -106,7 +106,7 @@ Packer/
     "box_name" : "k-osint", 
     "ssh_username": "kosint",
     "ssh_password": "kosint", 
-    "box_desc" : "Official Kali Linux OS distro of Tracelab"
+    "box_desc" : "Kali OSINT distro "
 
   },
   "description": "{{user `box_desc`}}",
