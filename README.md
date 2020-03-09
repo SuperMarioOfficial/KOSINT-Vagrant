@@ -574,6 +574,11 @@ config.ssh.username = "kosint"
 - ```vagrant init kosint ```
 - ```vagrant up ```
 
+#### connect to ssh 
+- vagrant ssh
+#### destroy
+- vagrant destroy
+
 ### vagrantfile
 ```
 # -*- mode: ruby -*-
