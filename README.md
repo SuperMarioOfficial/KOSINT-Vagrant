@@ -1,6 +1,9 @@
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 # The "KOSINT" Kali for OSINT Distro
-#### Virtualbox + Kali Linux personalized ISO + Packer + Ansible + Vagrant + Docker
+#### Kali Linux + Packer + Ansible + Vagrant + Docker + Virtualbox
+[Vagrant Cloud: KOSINT BOX](#)
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+# Tutorial
 ## Build the ISO
 ### steps:
 #### 1 Clone the live-build
