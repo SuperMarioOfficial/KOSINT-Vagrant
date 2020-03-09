@@ -37,8 +37,9 @@ cd live-build-config
 kali-linux-core
 
 # Kali applications
-#kali-tools-information-gathering
-#kali-tools-reporting
+kali-tools-top10
+kali-tools-information-gathering
+kali-tools-reporting
 
 # Graphical desktop
 kali-desktop-xfce
@@ -52,6 +53,11 @@ label install
     initrd /install/initrd.gz
     append vga=788 -- quiet file=/cdrom/install/preseed.cfg locale=en_US keymap=us hostname=kali domain=local.lan
 ```
+
+#### 4 configure the booting color scheme
+- edit the theme.txt to personalize the booting theme
+
+#### 5 
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
