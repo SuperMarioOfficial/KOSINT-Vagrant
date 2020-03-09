@@ -104,8 +104,8 @@ Packer/
     "iso_checksum_type": "sha1",
     "iso_url": "k-osint.iso",
     "box_name" : "k-osint", 
-    "ssh_username": "tracelabs",
-    "ssh_password": "tracelabs", 
+    "ssh_username": "kosint",
+    "ssh_password": "kosint", 
     "box_desc" : "Official Kali Linux OS distro of Tracelab"
 
   },
@@ -124,8 +124,8 @@ Packer/
       "http_directory": "http",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S /sbin/shutdown -hP now",
       "communicator": "ssh",
-      "ssh_username": "tracelabs",
-      "ssh_password": "tracelabs", 
+      "ssh_username": "kosint",
+      "ssh_password": "kosint", 
       "ssh_port": 22,
       "ssh_wait_timeout": "60m",
       "guest_additions_mode": "disable",
@@ -290,8 +290,7 @@ d-i apt-setup/disable-cdrom-entries boolean true
 tasksel tasksel/first multiselect desktop-xfce, meta-default, standard
 
 # Change default hostname
-d-i netcfg/get_hostname string tracelab
-d-i netcfg/get_hostname string kali
+d-i netcfg/get_hostname string kosint
 d-i netcfg/get_domain string unassigned-domain
 #d-i netcfg/choose_interface select auto
 d-i netcfg/choose_interface select eth0
@@ -300,14 +299,14 @@ d-i netcfg/dhcp_timeout string 60
 d-i hw-detect/load_firmware boolean false
 
 # vagrant user account
-d-i passwd/user-fullname string tracelabs
-d-i passwd/username string tracelabs
-d-i passwd/user-password password tracelabs
-d-i passwd/user-password-again password tracelabs
+d-i passwd/user-fullname string kosint
+d-i passwd/username string kosint
+d-i passwd/user-password password kosint
+d-i passwd/user-password-again password kosint
 
 # root
-d-i passwd/root-password password tracelabs
-d-i passwd/root-password-again password tracelabs
+d-i passwd/root-password password kosint
+d-i passwd/root-password-again password kosint
 
 d-i apt-setup/use_mirror boolean true
 d-i grub-installer/only_debian boolean true
@@ -446,7 +445,7 @@ echo "##########################################################################
 echo "# 04_Others                                                                  #"| tee -a $logz
 echo "##############################################################################"
 PATH=/usr/bin:/usr/sbin
-echo "root:tracelabs" | sudo chpasswd
+echo "root:kosint" | sudo chpasswd
 ```
 ### networking.sh
 ```
@@ -565,8 +564,8 @@ hosts: localhost
  
  Pretty easy, but it is important to add to the .vagrantfile the following line:
  ```
-config.ssh.password = "tracelabs"
-config.ssh.username = "tracelabs"
+config.ssh.password = "kosint"
+config.ssh.username = "kosint"
  ```
  
 ###  Vagrant Post-Processor 
@@ -655,8 +654,8 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   
-config.ssh.password = "tracelabs"
-config.ssh.username = "tracelabs"
+config.ssh.password = "kosint"
+config.ssh.username = "kosint"
 
 
 end
