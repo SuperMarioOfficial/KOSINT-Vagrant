@@ -570,9 +570,9 @@ hosts: localhost
 config.ssh.password = "kosint"
 config.ssh.username = "kosint"
 ```
-```vagrant box add kosint k-osint-virtualbox.box --name kosint ```
-```vagrant init kosint ```
-```vagrant up ```
+- ```vagrant box add kosint k-osint-virtualbox.box --name kosint ```
+- ```vagrant init kosint ```
+- ```vagrant up ```
 
 ### vagrantfile
 ```
