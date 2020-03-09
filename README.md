@@ -564,31 +564,17 @@ hosts: localhost
     }
   ]
 ```
- - Second, you need to use the command ```vagrant box add k-osint-virtualbox.box --name k-osint```
- - Third, ```vagrant init k-osint```
- - Fourth, ```vagrant up```
- 
- Pretty easy, but it is important to add to the .vagrantfile the following line:
+### Steps:
+- Add this line to the vagrantfile
  ```
 config.ssh.password = "kosint"
 config.ssh.username = "kosint"
- ```
- 
-###  Vagrant Post-Processor 
-Vagrant post-processor can create boxes for the following providers.
 ```
-    AWS
-    Azure
-    DigitalOcean
-    Docker
-    Hyper-V
-    LXC
-    Parallels
-    QEMU
-    VirtualBox
-    VMware
-```
-### vagrant file
+```vagrant box add kosint k-osint-virtualbox.box --name kosint ```
+```vagrant init kosint ```
+```vagrant up ```
+
+### vagrantfile
 ```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
