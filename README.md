@@ -463,74 +463,7 @@ resolvconf -u
 ### How to create a playbook
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
 - [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
-```
-"provisioners": [
-{
-"type": "shell",
-"script": "provision.sh"
-}
-]
-```
-```
-#!/bin/bash
-set -e
-#provision.sh sudo apt-get update
- echo "apt-get update done."
- sudo apt-get -y upgrade
- sudo apt-get install -y python-dev python-pip
- sudo pip install ansible
- sudo timedatectl set-timezone Europe/Istanbul
- sudo localectl set-locale LANG=en_US.utf8
- sudo wget ‘https://s3.amazonaws.com/packeramidemo/i_playbook.yml'
- echo "Running build."
- sudo ansible-playbook i_playbook.yml
-```
 
-```
-hosts: localhost
- connection: local
- sudo: yes
- tasks:
-  — name: Install list of packages
-  apt: name={{item}} state=installed
- with_items:
- — htop
- — ctop
- — screen
- — unzip
- — curl
- — sudo
- — mtr
- — bash-completion
- — tree
- — colordiff
- — ntp
- — bwm-ng
- — docker-compose
- — apt-transport-https- name: install docker
- 
-- name: Update and upgrade apt packages
-  become: true
-  apt:
-    update_cache: yes
-    upgrade: yes
-    cache_valid_time: 86400 #One day
- 
-# do the actual apt-get dist-upgrade
- - name: apt-get dist-upgrade
-   apt:
-     upgrade: dist # upgrade all packages to latest version
-    
- - name: apt-get autoremove
-      command: apt-get -y autoremove
-      args:
-        warn: false
-
-# check if we need a reboot
- - name: check if reboot needed
-    stat: path=/var/run/reboot-required
-    register: file_reboot_required
-```
 ### References:
 - [provision-multiple-machines-in-parallel-with-vagrant-and-ansible](https://martincarstenbach.wordpress.com/2019/04/11/ansible-tipsntricks-provision-multiple-machines-in-parallel-with-vagrant-and-ansible/)
 - [provisioning-a-virtual-machine-with-ansible](https://spaceweb.nl/provisioning-a-virtual-machine-with-ansible/)
@@ -691,6 +624,40 @@ USER anon
 
 CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ```
+![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+## Small guide on ssh
+SSH keys provide a secure way of logging into a Linux on the cloud or virtual machine on prem. 
+### Steps to setup secure ssh keys:
+##### Step One—Create the RSA Key Pair
+```ssh-keygen -t rsa```
+##### Step Two—Store the Keys and Passphrase    
+- The ***public key*** is now located in /.ssh/id_rsa.pub.
+- The ***private key*** (identification) is now located in /.ssh/id_rsa. 
+##### Step Three—Copy the Public Key
+- method 1
+```ssh-copy-id username@host.com```
+- method 2
+``` cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"```
+##### Disable root login
+- On the server side
+```sudo nano /etc/ssh/sshd_config```
+- Add this line
+```PermitRootLogin without-password```
+- Reload
+```sudo systemctl reload sshd.service```
+
+### Copy files to/from
+- to 
+```scp myfile.txt remoteuser@remoteserver:/remote/folder/```
+```scp -r * remoteuser@remoteserver:/remote/folder/```
+- from 
+```scp remoteuser@remoteserver:/remote/folder/myfile.txt  myfile.txt```
+```scp -r * remoteuser@remoteserver:/remote/folder/```
+    
+### Reference
+- [how-to-set-up-ssh-keys-on-linux-unix?](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
+- [how-to-set-up-ssh-keys](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2)
+- [how-to-copy-files-using-ssh](https://www.simplified.guide/ssh/copy-file)
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
