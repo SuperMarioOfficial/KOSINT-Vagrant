@@ -497,9 +497,10 @@ config.ssh.username = "kosint"
 - ```vagrant up ```
 
 #### connect to ssh 
-- vagrant ssh
+- ```vagrant ssh```
+#### connect to ssh -X with Vagrant [run-graphical-programs-within-vagrantboxes](https://coderwall.com/p/ozhfva/run-graphical-programs-within-vagrantboxes)
 #### destroy
-- vagrant destroy
+- ```vagrant destroy```
 
 ### vagrantfile
 ```
