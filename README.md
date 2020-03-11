@@ -486,7 +486,7 @@ resolvconf -u
     }
   ]
 ```
-### Steps:
+### Basic steps to start vagrant
 - Add this line to the vagrantfile
  ```
 config.ssh.password = "kosint"
@@ -496,10 +496,10 @@ config.ssh.username = "kosint"
 - ```vagrant init kosint ```
 - ```vagrant up ```
 
-#### connect to ssh 
+### connect to ssh 
 - ```vagrant ssh```
-#### connect to ssh -X with Vagrant [run-graphical-programs-within-vagrantboxes](https://coderwall.com/p/ozhfva/run-graphical-programs-within-vagrantboxes)
-#### destroy
+### connect to ssh -X with Vagrant [run-graphical-programs-within-vagrantboxes](https://coderwall.com/p/ozhfva/run-graphical-programs-within-vagrantboxes)
+### destroy
 - ```vagrant destroy```
 
 ### vagrantfile
