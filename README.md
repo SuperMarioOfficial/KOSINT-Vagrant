@@ -656,6 +656,15 @@ SSH keys provide a secure way of logging into a Linux on the cloud or virtual ma
 ```scp remoteuser@remoteserver:/remote/folder/myfile.txt  myfile.txt```
 #### * files from 
 ```scp -r * remoteuser@remoteserver:/remote/folder/```
+
+### Use SSH to Create an HTTP Proxy
+
+- Open Firefox, 
+	- go to Edit
+		- →Preferences
+			- →Advanced
+				- →Network
+					- →Settings and specify that you want to use a Manual Proxy, localhost, port 12345 and SOCKS v5
     
 ### Reference
 - [how-to-set-up-ssh-keys-on-linux-unix?](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
