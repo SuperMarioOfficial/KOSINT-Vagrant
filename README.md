@@ -628,30 +628,32 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ## Small guide on ssh
 SSH keys provide a secure way of logging into a Linux on the cloud or virtual machine on prem. 
 ### Steps to setup secure ssh keys:
-##### Step One—Create the RSA Key Pair
+#### Step One—Create the RSA Key Pair
 ```ssh-keygen -t rsa```
-##### Step Two—Store the Keys and Passphrase    
+#### Step Two—Store the Keys and Passphrase    
 - The ***public key*** is now located in /.ssh/id_rsa.pub.
 - The ***private key*** (identification) is now located in /.ssh/id_rsa. 
-##### Step Three—Copy the Public Key
-- method 1
+#### Step Three—Copy the Public Key
+##### method 1
 ```ssh-copy-id username@host.com```
-- method 2
+##### method 2
 ``` cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"```
-##### Disable root login
-- On the server side
+### Disable root login
+#### On the server side
 ```sudo nano /etc/ssh/sshd_config```
-- Add this line
+#### Add this line
 ```PermitRootLogin without-password```
-- Reload
+#### Reload
 ```sudo systemctl reload sshd.service```
 
 ### Copy files to/from
-- to 
+#### single file to
 ```scp myfile.txt remoteuser@remoteserver:/remote/folder/```
+#### * files to
 ```scp -r * remoteuser@remoteserver:/remote/folder/```
-- from 
+#### single file from 
 ```scp remoteuser@remoteserver:/remote/folder/myfile.txt  myfile.txt```
+#### * files from 
 ```scp -r * remoteuser@remoteserver:/remote/folder/```
     
 ### Reference
