@@ -8,6 +8,7 @@
 - [Docker Tutorial](https://github.com/frankietyrine/K-OSINT.iso#docker)
 - [Packer Tutorial](https://github.com/frankietyrine/K-OSINT.iso#packer)
 - [Ansible Tutorial](https://github.com/frankietyrine/K-OSINT.iso#provisioning-with-ansible-playbook)
+- [SSH Tutorial](https://github.com/frankietyrine/K-OSINT.iso#Ssh)
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 ## Build the ISO
 ### steps:
@@ -625,7 +626,7 @@ USER anon
 CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ```
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-## Small guide on ssh
+## Ssh
 SSH keys provide a secure way of logging into a Linux on the cloud or virtual machine on prem. 
 ### Steps to setup secure ssh keys:
 #### Step One—Create the RSA Key Pair
