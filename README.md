@@ -628,7 +628,8 @@ CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 ## Ssh
 SSH keys provide a secure way of logging into a Linux on the cloud or virtual machine on prem. 
-```  ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] [-b bind_address] [-c cipher_spec]
+```  bash
+ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] [-b bind_address] [-c cipher_spec]
          [-D [bind_address:]port] [-E log_file] [-e escape_char] [-F configfile] [-I pkcs11]
          [-i identity_file] [-J destination] [-L address] [-l login_name] [-m mac_spec]
          [-O ctl_cmd] [-o option] [-p port] [-Q query_option] [-R address] [-S ctl_path]
