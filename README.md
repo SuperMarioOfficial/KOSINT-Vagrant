@@ -635,18 +635,25 @@ ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] [-b bind_address] [-c cipher_
          [-i identity_file] [-J destination] [-L address] [-l login_name] [-m mac_spec]
          [-O ctl_cmd] [-o option] [-p port] [-Q query_option] [-R address] [-S ctl_path]
          [-W host:port] [-w local_tun[:remote_tun]] destination [command]
-```
-### Steps to setup secure ssh keys:
-#### Step One—Create the RSA Key Pair
+``` 
+### Steps to setup SSH connection
+### Virtualbox
+- install openssh-server
+### Host
+- install openssh-client
+### Create the RSA Key Pair
 ```ssh-keygen -t rsa```
-#### Step Two—Store the Keys and Passphrase    
-- The ***public key*** is now located in /.ssh/id_rsa.pub.
+### Store the Keys and Passphrase    
+- The ***public key*** is now located in /.ssh/id_rsa.pub. ***the one you send out***
 - The ***private key*** (identification) is now located in /.ssh/id_rsa. 
-#### Step Three—Copy the Public Key
-##### method 1
-```ssh-copy-id username@host.com```
-##### method 2
-``` cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"```
+### Copy the Public Key
+#### from linux host
+``` cat ~/.ssh/id_rsa.pub | ssh kosint@127.0.0.1 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"```
+#### from windows host
+#### copy the key into a tmp file
+``` scp -P 2222 id_rsa.pub kosint@127.0.0.1:/tmp/id_rsa.pub```
+##### append the key into the authorized keys
+``` cat /tmp/id_rsa.pub >>  ~/.ssh/authorized_keys```
 ### Disable root login
 #### On the server side
 ```sudo nano /etc/ssh/sshd_config```
@@ -657,17 +664,17 @@ ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] [-b bind_address] [-c cipher_
 
 ### Copy files to/from
 #### single file to
-```scp myfile.txt remoteuser@remoteserver:/remote/folder/```
+```scp myfile.txt kosint@127.0.0.1:/remote/folder/```
 #### * files to
-```scp -r * remoteuser@remoteserver:/remote/folder/```
+```scp -r * kosint@127.0.0.1:/remote/folder/```
 #### single file from 
-```scp remoteuser@remoteserver:/remote/folder/myfile.txt  myfile.txt```
+```scp kosint@127.0.0.1:/remote/folder/myfile.txt  myfile.txt```
 #### * files from 
-```scp -r * remoteuser@remoteserver:/remote/folder/```
+```scp -r * kosint@127.0.0.1:/remote/folder/```
 
 ### Use SSH to Create an HTTP Proxy
 #### client side
-```ssh -D 8123 -f -C -q -N sammy@example.com```
+```ssh -D 8123 -f -C -q -N kosint@127.0.0.1```
 ##### flags:
 - D: Tells SSH that we want a SOCKS tunnel on the specified port number (you can choose a number between 1025-65536)
 - f: Forks the process to the background
@@ -685,7 +692,9 @@ ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] [-b bind_address] [-c cipher_
 
 ### Use GUI programs from ssh
 #### x11 
-```ssh -XC laptop```
+from windows you need to have installed xming. 
+```ssh -XC kosint@127.0.0.1 -p 2222```
+
 #### firefox
 ```firefox &```
 
