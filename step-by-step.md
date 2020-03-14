@@ -1,5 +1,5 @@
 # Simple steps from Packer to Vagrant
-
+**This is not the only way of creating a fully functional vagrant box, but this is how I do it** 
 ### Packer [Virtual machine settings]
 - adjust the vm settings in the packer file
 - change the passwords in the preseed and ssh of the packer file
