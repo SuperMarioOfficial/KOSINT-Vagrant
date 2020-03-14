@@ -7,6 +7,8 @@
 ### Vagrant
 - add or change the password for the ssh into the vagrantfile
 - make sure that the ansible file is in the same folder
+### Ansible
+- check the ansible playbook file to add or remove packages
 #### copy paste the following commands
 ```
     vagrant box add kosint k-osint-virtualbox.box --name kosint
