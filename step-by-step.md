@@ -1,14 +1,14 @@
 # Simple steps from Packer to Vagrant
 
-### Packer
+### Packer [Virtual machine settings]
 - adjust the vm settings in the packer file
 - change the passwords in the preseed and ssh of the packer file
 - run the command ```packer build --force <name of the file>.json```
-### Vagrant
-- add or change the password for the ssh into the vagrantfile
-- make sure that the ansible file is in the same folder
-### Ansible
+### Ansible [Software provisioning]
 - check the ansible playbook file to add or remove packages
+### Vagrant [Manage the virtual machine]
+- add or change the password for the ssh into the vagrantfile
+- make sure that the ansible playbook is in the right folder
 #### copy paste the following commands
 ```
     vagrant box add kosint k-osint-virtualbox.box --name kosint
