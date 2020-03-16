@@ -470,7 +470,14 @@ resolvconf -u
 ### References:
 - [provision-multiple-machines-in-parallel-with-vagrant-and-ansible](https://martincarstenbach.wordpress.com/2019/04/11/ansible-tipsntricks-provision-multiple-machines-in-parallel-with-vagrant-and-ansible/)
 - [provisioning-a-virtual-machine-with-ansible](https://spaceweb.nl/provisioning-a-virtual-machine-with-ansible/)
+- [introduction-to-ansible-tutorial](https://www.poftut.com/introduction-to-ansible-tutorial/)
+- [ansible-system-updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
+- [Ansible Automation | Ansible Adhoc Commands and Configuration](https://www.youtube.com/watch?v=lRwGkO3PtB8)
+- [ansible-tutorial guru99](https://www.guru99.com/ansible-tutorial.html)
+- [Official introduction-to-ansible](https://www.ansible.com/resources/webinars-training/introduction-to-ansible)
+
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
+
 
 
 ## Vagrant
