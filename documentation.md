@@ -532,7 +532,7 @@ resolvconf -u
 
 ## Vagrant
 [Vagrant cloud](https://app.vagrantup.com/boxes/search)
-### How to create a box
+### How to create a box from packer
 - The first thing to do to create a box with packer is to add these lines to packer json file. 
 ```
  "post-processors": [
@@ -545,7 +545,7 @@ resolvconf -u
     }
   ]
 ```
-### Basic steps to start vagrant
+### Basic steps to start vagrant from prem
 - Add this line to the vagrantfile
  ```
 config.ssh.password = "kosint"
@@ -556,8 +556,6 @@ config.ssh.username = "kosint"
 - ```vagrant up ```
 
 ### Creating a VM
-
-    vagrant init -- Initialize Vagrant with a Vagrantfile and ./.vagrant directory, using no specified base image. Before you can do vagrant up, you'll need to specify a base image in the Vagrantfile.
     vagrant init <boxpath> -- Initialize Vagrant with a specific box. To find a box, go to the public Vagrant box catalog. When you find one you like, just replace it's name with boxpath. For example, vagrant init ubuntu/trusty64.
 
 ### Starting a VM
@@ -573,7 +571,7 @@ config.ssh.username = "kosint"
     vagrant ssh -- connects to machine via SSH
     vagrant ssh <boxname> -- If you give your box a name in your Vagrantfile, you can ssh into it with boxname. Works from any directory.
 
-Stopping a VM
+### Stopping a VM
 
     vagrant halt -- stops the vagrant machine
     vagrant suspend -- suspends a virtual machine (remembers state)
@@ -590,7 +588,7 @@ Stopping a VM
     vagrant package -- packages a running virtualbox env in a reusable box
 
 ### Saving Progress
--vagrant snapshot save [options] [vm-name] <name> -- vm-name is often default. Allows us to save so that we can rollback at a later time
+	vagrant snapshot save [options] [vm-name] <name> -- vm-name is often default. Allows us to save so that we can rollback at a later time
 	
 ### Tips
 
@@ -606,7 +604,8 @@ Stopping a VM
 ### connect to ssh -X with Vagrant [run-graphical-programs-within-vagrantboxes](https://coderwall.com/p/ozhfva/run-graphical-programs-within-vagrantboxes)
 
 
-### vagrantfile
+### Example of a full vagrantfile
+Vagrant files are a configureation files that allow to manage the machine.
 ``` bash
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -682,40 +681,8 @@ config.ssh.password = "kosint"
 config.ssh.username = "kosint"
 end
 ```
-
-### Simple vagrant file
+### Provisioning with ansible in a vagrant file
 ``` bash
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
-Vagrant.configure(2) do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
-
-  config.vm.box = "cylab/ubuntu-16.04-64-server"
-
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  config.vm.box_check_update = true
-
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "ubuntu-16.04-64-desktop"
-  end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
-  
   # Run Ansible from the Vagrant VM
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook       = "playbook.yml"
