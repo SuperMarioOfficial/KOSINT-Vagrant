@@ -463,9 +463,57 @@ resolvconf -u
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 ## Provisioning with ansible playbook
-### How to create a playbook
+### Adding docker and aptitude
+```
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Pull default Docker image
+      docker_image:
+        name: "{{ default_container_image }}"
+        source: pull
+
+    # Creates the number of containers defined by the variable create_containers, using values from vars file
+    - name: Create default containers
+      docker_container:
+        name: "{{ default_container_name }}{{ item }}"
+        image: "{{ default_container_image }}"
+        command: "{{ default_container_command }}"
+        state: present
+      with_sequence: count={{ create_containers }}
+```
+### Playbook examples:
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
-- [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
+- [kali-playbook.yml](https://github.com/camjjack/vagrant-ctf/blob/master/kali-playbook.yml)
+- [kali-light/playbook.yml](https://gitlab.cylab.be/cylab/vagrant-boxes/blob/9abada07f232d9c50f90f94f9d33f9a90778ae19/kali-light/playbook.yml)
 
 ### References:
 - [provision-multiple-machines-in-parallel-with-vagrant-and-ansible](https://martincarstenbach.wordpress.com/2019/04/11/ansible-tipsntricks-provision-multiple-machines-in-parallel-with-vagrant-and-ansible/)
@@ -475,6 +523,8 @@ resolvconf -u
 - [Ansible Automation | Ansible Adhoc Commands and Configuration](https://www.youtube.com/watch?v=lRwGkO3PtB8)
 - [ansible-tutorial guru99](https://www.guru99.com/ansible-tutorial.html)
 - [Official introduction-to-ansible](https://www.ansible.com/resources/webinars-training/introduction-to-ansible)
+- [Using Ansible for system updates](https://www.redpill-linpro.com/sysadvent/2017/12/24/ansible-system-updates.html)
+
 
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
@@ -512,7 +562,7 @@ config.ssh.username = "kosint"
 - ```vagrant destroy```
 
 ### vagrantfile
-```
+``` bash
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -585,10 +635,49 @@ Vagrant.configure("2") do |config|
   
 config.ssh.password = "kosint"
 config.ssh.username = "kosint"
-
-
 end
+```
 
+### Simple vagrant file
+``` bash
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.box = "cylab/ubuntu-16.04-64-server"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  config.vm.box_check_update = true
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "ubuntu-16.04-64-desktop"
+  end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   sudo apt-get update
+  #   sudo apt-get install -y apache2
+  # SHELL
+  
+  # Run Ansible from the Vagrant VM
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook       = "playbook.yml"
+    ansible.verbose        = false
+    ansible.install        = true
+  end
+end
 ```
 
 ### References:
