@@ -1,8 +1,9 @@
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
-# Stack:
+# Documentation
+## Stack:
 ### Kali Linux ISO + Packer + Ansible + Vagrant + Docker + Virtualbox + Vmware
 
-### Compact tutorial on what to do
+### Steps
 - [Steps](https://github.com/frankietyrine/K-OSINT.iso/blob/master/step-by-step.md)
 ### Tutorials
 - [Vagrant Tutorial](https://github.com/frankietyrine/K-OSINT.iso#vagrant)
