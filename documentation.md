@@ -681,7 +681,7 @@ config.ssh.password = "kosint"
 config.ssh.username = "kosint"
 end
 ```
-### Provisioning with ansible in a vagrant file
+### Provisioning with ansible in a vagrant file [source](https://pablo.tools/posts/computers/custom-kali-box/)
 ``` bash
   # Run Ansible from the Vagrant VM
   config.vm.provision "ansible_local" do |ansible|
@@ -690,6 +690,25 @@ end
     ansible.install        = true
   end
 end
+```
+
+### Changing the shell 
+#### Download
+```bash
+tasks:
+- name: Install missing packages
+  apt:
+    pkg:
+      - zsh
+    state: latest
+    update_cache: yes
+```
+#### Set
+```bash
+- name: Set shell of user root to zsh
+  user:
+    name: root
+    shell: /bin/zsh
 ```
 
 ### References:
