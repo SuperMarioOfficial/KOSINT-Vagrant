@@ -681,7 +681,7 @@ config.ssh.password = "kosint"
 config.ssh.username = "kosint"
 end
 ```
-### Provisioning with ansible in a vagrant file [source](https://pablo.tools/posts/computers/custom-kali-box/)
+### Provisioning with ansible in a vagrant file 
 ``` bash
   # Run Ansible from the Vagrant VM
   config.vm.provision "ansible_local" do |ansible|
@@ -692,8 +692,8 @@ end
 end
 ```
 
-### Changing the shell 
-#### Download
+### Changing to zsh-shell [source](https://pablo.tools/posts/computers/custom-kali-box/)
+#### Download the shell
 ```bash
 tasks:
 - name: Install missing packages
@@ -703,12 +703,25 @@ tasks:
     state: latest
     update_cache: yes
 ```
-#### Set
+#### Set the shell
 ```bash
 - name: Set shell of user root to zsh
   user:
     name: root
     shell: /bin/zsh
+```
+
+### Initialize metasploit [source](https://www.terasq.com/2019/03/building-kali-with-vagrant-ansible-p2/)
+```bash
+ - name: Initialize msfdb
+     shell: "{{ item }}"
+     with_items:
+     - "update-rc.d postgresql enable"
+     - "msfdb init"
+     - "touch /usr/share/metasploit-framework/.initialized"
+     args:
+       creates: "/usr/share/metasploit-framework/.initialized"
+       warn: false
 ```
 
 ### References:
