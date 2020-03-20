@@ -466,21 +466,20 @@ resolvconf -u
 Provisioning with Ansible allows you to seamlessly transition into configuration management, orchestration and application deployment using the same simple, human readable, automation language.
 - [ansible-basic-cheat-sheet](https://intellipaat.com/blog/tutorial/devops-tutorial/ansible-basic-cheat-sheet/)
 ### commands 
-```
-To check the connectivity of hosts	#ansible <group> -m ping
-To reboot hosts	#ansible <group> -a “/bin/reboot”
-To check the host system’s info	#ansible<group> -m steup | less
-To transfer files	#ansible <group> -m copy -a “src=home/ansible dest=/tmo/home”
-To create a new user	#ansible<group> -m user -a “name=ansible password= <encrypted password>”
-To delete a user	#ansible<group> -m user -a “name=ansible state- absent”
-To check if a package is installed and to update it	#ansible<group> -m yum -a “name=httpd state=latest”
-To check if a package is installed but not to update it	#ansible<group> -m yum -a “name=httpd state=present”
-To check if a package is of a specific version	#ansible<group> -m yum -a “name=httpd-1.8  state=latest”
-To check if a package is not installed	#ansible <group> -m yum -a “name= httpd state= absent
-To start a service	#ansible<group> -m service -a “name= httpd state=”started”
-To stop a service	#ansible<group> -m service -a “name= httpd state=”stopped”
-To restart a service	#ansible<group> -m service -a “name= httpd state=”restarted”
-```
+- To check the connectivity of hosts ```	#ansible <group> -m ping```
+- To reboot hosts	```#ansible all -a “/bin/reboot”```
+- To check the host system’s info	```#ansible all -m steup | less```
+- To transfer files	```#ansible all -m copy -a “src=home/ansible dest=/tmo/home”```
+- To create a new user	```#ansible all -m user -a “name=ansible password= <encrypted password>”```
+- To delete a user	```#ansible all -m user -a “name=ansible state- absent”```
+- To check if a package is installed and to update it	```#ansible all -m yum -a “name=httpd state=latest”```
+- To check if a package is installed but not to update it ```#ansible all -m yum -a “name=httpd state=present”```
+- To check if a package is of a specific version ```#ansible all -m yum -a “name=httpd-1.8  state=latest”```
+- To check if a package is not installed ```#ansible all -m yum -a “name= httpd state= absent```
+- To start a service	```#ansible all -m service -a “name= httpd state=”started”```
+- To stop a service	```#ansible all - allm service -a “name= httpd state=”stopped”```
+- To restart a service	```#ansible all -m service -a “name= httpd state=”restarted”```
+
 ### Ansible Glossary
 The following Ansible-specific terms are largely used throughout this guide
 - Control Machine / Node: a system where Ansible is installed and configured to connect and execute commands on nodes.
