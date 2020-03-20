@@ -462,18 +462,33 @@ resolvconf -u
 ```
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
-## Provisioning with ansible playbook
+## Provisioning with ansible playbook 
 Provisioning with Ansible allows you to seamlessly transition into configuration management, orchestration and application deployment using the same simple, human readable, automation language.
-
-Ansible can use playbooks and cmd line. 
+- [ansible-basic-cheat-sheet](https://intellipaat.com/blog/tutorial/devops-tutorial/ansible-basic-cheat-sheet/)
+### commands 
+```
+To check the connectivity of hosts	#ansible <group> -m ping
+To reboot hosts	#ansible <group> -a “/bin/reboot”
+To check the host system’s info	#ansible<group> -m steup | less
+To transfer files	#ansible <group> -m copy -a “src=home/ansible dest=/tmo/home”
+To create a new user	#ansible<group> -m user -a “name=ansible password= <encrypted password>”
+To delete a user	#ansible<group> -m user -a “name=ansible state- absent”
+To check if a package is installed and to update it	#ansible<group> -m yum -a “name=httpd state=latest”
+To check if a package is installed but not to update it	#ansible<group> -m yum -a “name=httpd state=present”
+To check if a package is of a specific version	#ansible<group> -m yum -a “name=httpd-1.8  state=latest”
+To check if a package is not installed	#ansible <group> -m yum -a “name= httpd state= absent
+To start a service	#ansible<group> -m service -a “name= httpd state=”started”
+To stop a service	#ansible<group> -m service -a “name= httpd state=”stopped”
+To restart a service	#ansible<group> -m service -a “name= httpd state=”restarted”
+```
 ### Ansible Glossary
 The following Ansible-specific terms are largely used throughout this guide
-    - Control Machine / Node: a system where Ansible is installed and configured to connect and execute commands on nodes.
-    - Node: a server controlled by Ansible.
-    - Inventory File: a file that contains information about the servers Ansible controls, typically located at /etc/ansible/hosts.
-    - Playbook: a file containing a series of tasks to be executed on a remote server.
-    - Role: a collection of playbooks and other files that are relevant to a goal such as installing a web server.
-    - Play: a full Ansible run. A play can have several playbooks and roles, included from a single playbook that acts as entry point.
+- Control Machine / Node: a system where Ansible is installed and configured to connect and execute commands on nodes.
+- Node: a server controlled by Ansible.
+- Inventory File: a file that contains information about the servers Ansible controls, typically located at /etc/ansible/hosts.
+- Playbook: a file containing a series of tasks to be executed on a remote server.
+- Role: a collection of playbooks and other files that are relevant to a goal such as installing a web server.
+- Play: a full Ansible run. A play can have several playbooks and roles, included from a single playbook that acts as entry point.
 
 #### Installing GoLang
 ```
