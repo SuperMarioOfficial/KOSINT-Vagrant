@@ -466,6 +466,15 @@ resolvconf -u
 Provisioning with Ansible allows you to seamlessly transition into configuration management, orchestration and application deployment using the same simple, human readable, automation language.
 
 Ansible can use playbooks and cmd line. 
+### Ansible Glossary
+The following Ansible-specific terms are largely used throughout this guide
+    - Control Machine / Node: a system where Ansible is installed and configured to connect and execute commands on nodes.
+    - Node: a server controlled by Ansible.
+    - Inventory File: a file that contains information about the servers Ansible controls, typically located at /etc/ansible/hosts.
+    - Playbook: a file containing a series of tasks to be executed on a remote server.
+    - Role: a collection of playbooks and other files that are relevant to a goal such as installing a web server.
+    - Play: a full Ansible run. A play can have several playbooks and roles, included from a single playbook that acts as entry point.
+
 #### Installing GoLang
 ```
 - name: install golang
