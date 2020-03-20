@@ -463,7 +463,82 @@ resolvconf -u
 ![](https://raw.githubusercontent.com/frankietyrine/K-OSINT.iso/master/unnamed.png)
 
 ## Provisioning with ansible playbook
-### Adding docker and aptitude
+Provisioning with Ansible allows you to seamlessly transition into configuration management, orchestration and application deployment using the same simple, human readable, automation language.
+
+Ansible can use playbooks and cmd line. 
+#### Installing GoLang
+```
+- name: install golang
+  hosts: newinstance
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars:
+    home_dir: "/home/yourpath"
+    file_owner: youruser
+ 
+  tasks:
+  - debug: msg="play_hosts={{play_hosts}}"
+   
+  - debug: msg="home={{ home_dir }}"
+   
+  - name: check current golang version
+    command: bash -c "/usr/local/go/bin/go version|sed -e 's/go version go//g'|cut -d' ' -f1"
+    ignore_errors: yes
+    register: go_version
+    changed_when: false
+ 
+  - debug: msg="go_version={{go_version.stdout}}"
+  - debug: msg="new_go_version={{new_go_version}}"
+ 
+  - name: continue only when version is older
+    fail: msg="Version already exists"
+    when: go_version.stdout != "" and "go_version.stdout | version_compare('{{new_go_version}}', operator='ge', strict=True)"
+ 
+  - debug: msg="continuing with installation"
+ 
+  - name: download golang tar 
+    get_url:
+      url: "https://storage.googleapis.com/golang/go{{new_go_version}}.linux-amd64.tar.gz"
+      dest: "{{home_dir}}"
+      mode: 0440
+     
+  - name: Remove old installation of Go
+    file:
+      path: /usr/local/go
+      state: absent
+    become: yes
+ 
+  - name: Extract the Go tarball
+    unarchive:
+      src: "{{home_dir}}/go{{new_go_version}}.linux-amd64.tar.gz"
+      dest: /usr/local
+      copy: no
+    become: yes
+ 
+  - name: create go directories in home
+    file:
+      path: "{{item}}"
+      state: directory
+      owner: "{{file_owner}}"
+      group: "{{file_owner}}"
+      mode: 0775
+    with_items:
+    - "{{home_dir}}/go"
+    - "{{home_dir}}/go/bin"
+     
+  - name: modify .bashrc
+    blockinfile:
+      dest: "{{home_dir}}/.bashrc"
+      block: |
+        export GOPATH=$HOME/go
+        export GOBIN=$GOPATH/bin
+        export PATH=$GOBIN:$PATH:/usr/local/go/bin
+      marker: '# {mark} ANSIBLE MANAGED BLOCK - changes for golang'
+      insertafter: EOF
+      create: yes 
+```
+#### Adding docker and aptitude
 ```
 ---
 - hosts: all
@@ -510,7 +585,59 @@ resolvconf -u
         state: present
       with_sequence: count={{ create_containers }}
 ```
-### Playbook examples:
+
+#### Update && Upgrade
+```
+- hosts: all
+  become: true
+    
+  tasks:
+  - name: dist-upgrade
+    apt: 
+      upgrade: dist
+      update_cache: yes
+      purge: yes
+      autoremove: yes
+      autoclean: yes
+
+```
+#### Install packages
+```
+  - name: install packages
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - curl
+      - hydra
+      - nmap
+      - sqlmap
+      - john
+      - wireshark
+      - chromium-browser
+```
+
+#### clone from git [Documentation](https://docs.ansible.com/ansible/latest/modules/git_module.html)
+- https://github.com/s0md3v/Photon.git
+- https://github.com/sherlock-project/sherlock.git
+- https://github.com/jofpin/trape.git
+- https://github.com/michenriksen/gitrob.git
+- https://github.com/smicallef/spiderfoot.git
+- https://github.com/laramies/theHarvester.git
+- https://github.com/michenriksen/aquatone.git
+- https://github.com/OWASP/Amass.git
+- https://github.com/eth0izzle/shhgit.git
+```
+- name: clone repos
+- git:
+    	repo: 'https://github.com/s0md3v/Photon.git'
+    	dest: ~/Desktop/Photon
+  become: yes
+  become_method: sudo
+```
+
+
+
 - [pedantically_commented_playbook.yml/playbook.yml ](https://github.com/ogratwicklcs/pedantically_commented_playbook.yml/blob/master/playbook.yml)
 - [kali-playbook.yml](https://github.com/camjjack/vagrant-ctf/blob/master/kali-playbook.yml)
 - [kali-light/playbook.yml](https://gitlab.cylab.be/cylab/vagrant-boxes/blob/9abada07f232d9c50f90f94f9d33f9a90778ae19/kali-light/playbook.yml)
