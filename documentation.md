@@ -645,11 +645,7 @@ The following Ansible-specific terms are largely used throughout this guide
 - https://github.com/sherlock-project/sherlock.git
 - https://github.com/jofpin/trape.git
 - https://github.com/michenriksen/gitrob.git
-- https://github.com/smicallef/spiderfoot.git
-- https://github.com/laramies/theHarvester.git
-- https://github.com/michenriksen/aquatone.git
-- https://github.com/OWASP/Amass.git
-- https://github.com/eth0izzle/shhgit.git
+- [more](https://awesomeopensource.com/projects/osint)
 ```
 - name: clone repos
 - git:
