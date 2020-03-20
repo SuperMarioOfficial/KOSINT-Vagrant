@@ -11,7 +11,7 @@
 - make sure that the ansible playbook is in the right folder
 #### copy paste the following commands
 ```
-    vagrant box add kosint k-osint-virtualbox.box --name kosint
+    vagrant box add mindwarelab/kosint
     vagrant init kosint
     vagrant up
 ```
