@@ -1,5 +1,12 @@
 
-**This is not the only way of creating a fully functional vagrant box, but this is how I do it** 
+# How to access this machine
+```
+    vagrant box add mindwarelab/kosint
+    vagrant init kosint
+    vagrant up
+```
+# Instructions 
+This repository contain the basic packer instruction to create a vagrant box. The key points of the configuration of the box as explained below. 
 ### Packer [Virtual machine settings]
 - adjust the vm settings in the packer file
 - change the passwords in the preseed and ssh of the packer file
@@ -9,14 +16,3 @@
 ### Vagrant [Manage the virtual machine]
 - add or change the password for the ssh into the vagrantfile
 - make sure that the ansible playbook is in the right folder
-#### copy paste the following commands
-```
-    vagrant box add mindwarelab/kosint
-    vagrant init kosint
-    vagrant up
-```
-
-### What next?
-- ssh into the machine and use it
-- upload it to the vagrant cloud
-- read the documentation 
