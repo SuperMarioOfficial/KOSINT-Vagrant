@@ -1,5 +1,5 @@
 
-# Instruction to use the box
+# Instructions to use the box
 ```
     vagrant box add mindwarelab/kosint
     vagrant up
