@@ -2,7 +2,6 @@
 # How to access this machine
 ```
     vagrant box add mindwarelab/kosint
-    vagrant init kosint
     vagrant up
 ```
 # Instructions 
