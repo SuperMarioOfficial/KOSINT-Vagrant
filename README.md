@@ -1,5 +1,5 @@
 
-# How to access this machine
+# Instruction to use the box
 ```
     vagrant box add mindwarelab/kosint
     vagrant up
