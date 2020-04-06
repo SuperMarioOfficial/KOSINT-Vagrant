@@ -3,8 +3,8 @@
 ```
     vagrant box add mindwarelab/kosint
     vagrant up
-```
-# Instructions 
+``` 
+# Instructions to rebuild the box
 This repository contain the basic packer instruction to create a vagrant box. The key points of the configuration of the box as explained below. 
 ### Packer [Virtual machine settings]
 - adjust the vm settings in the packer file
